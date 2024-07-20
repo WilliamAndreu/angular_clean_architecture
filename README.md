@@ -23,7 +23,7 @@ _Estas instrucciones te permitirán obtener una copia del proyecto en funcionami
 Clone the project
 
 ```bash
-  git clone https://bitbucket.org/rudoapps/angular_architecture.git
+  git clone https://github.com/WilliamAndreu/angular_clean_architecture
 ```
 
 Go to the project directory
