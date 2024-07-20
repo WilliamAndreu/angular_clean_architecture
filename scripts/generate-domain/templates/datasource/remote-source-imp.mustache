@@ -1,0 +1,22 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Request } from 'src/core/core-interface/request';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { {{className}}RemoteDataSource } from '@data/datasource/{{name}}/source/{{name}}-remote-datasource';
+import { {{className}}DTO } from '@data/datasource/{{name}}/remote/dto/{{name}}.dto';
+
+@Injectable()
+export class {{className}}RemoteDataSourceImp extends {{className}}RemoteDataSource{
+
+  constructor(public http: HttpClient) {
+    super();
+  }
+
+  override get{{className}}(params: string): Observable<{{className}}DTO> {
+    const path = "https://dummyjson.com/products/1";
+    const headers = new HttpHeaders()
+    return this.http.get<{{className}}DTO>(path, { headers: headers });
+  }
+
+
+  }

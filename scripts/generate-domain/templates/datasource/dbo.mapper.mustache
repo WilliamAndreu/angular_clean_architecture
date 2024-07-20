@@ -1,0 +1,45 @@
+import { Mapper } from 'src/core/core-interface/mapper';
+import { {{className}}DBO } from '@data/datasource/{{name}}/local/dbo/{{name}}.dbo';
+import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity';
+
+
+
+export class {{className}}DboRepositoryMapper extends Mapper<
+{{className}}DBO,
+  {{className}}Entity
+> {
+
+
+  mapTo(param: {{className}}DBO): {{className}}Entity {
+    return {
+      id: param.id,
+      title: param.title,
+      description: param.description,
+      price: param.price,
+      discountPercentage: param.discountPercentage,
+      rating: param.rating,
+      stock: param.stock,
+      brand: param.brand,
+      category: param.category,
+      thumbnail: param.thumbnail,
+      images: param.images
+    };
+  }
+
+
+  mapFrom(param: {{className}}Entity): {{className}}DBO {
+    return {
+       id: param.id,
+      title: param.title,
+      description: param.description,
+      price: param.price,
+      discountPercentage: param.discountPercentage,
+      rating: param.rating,
+      stock: param.stock,
+      brand: param.brand,
+      category: param.category,
+      thumbnail: param.thumbnail,
+      images: param.images
+    };
+  }
+}

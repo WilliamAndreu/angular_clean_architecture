@@ -1,0 +1,6 @@
+import { Observable } from 'rxjs';
+import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity';
+
+export abstract class {{className}}Repository {
+  abstract get{{className}}(params : string): Observable<{{className}}Entity>;
+}

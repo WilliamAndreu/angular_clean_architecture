@@ -1,0 +1,6 @@
+import { Observable } from "rxjs";
+import { {{className}}DBO } from "../local/dbo/{{name}}.dbo";
+
+export abstract class {{className}}LocalDataSource {
+    abstract get{{className}}(params: string): {{className}}DBO ;
+}

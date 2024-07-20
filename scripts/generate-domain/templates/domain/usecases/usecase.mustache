@@ -1,0 +1,16 @@
+import { Observable } from 'rxjs';
+import { UseCase } from 'src/core/core-interface/use-case';
+import { Injectable } from '@angular/core';
+import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity';
+import { {{className}}Repository } from '../../repositories/{{name}}/{{name}}.repository';
+
+@Injectable()
+export class Get{{className}}UseCase
+  implements UseCase<string, {{className}}Entity>
+{
+  constructor(private {{name}}Repository: {{className}}Repository) {}
+
+  execute(params: string): Observable<{{className}}Entity> {
+    return this.{{name}}Repository.get{{className}}(params)
+  }
+}

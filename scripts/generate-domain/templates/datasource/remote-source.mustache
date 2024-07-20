@@ -1,0 +1,6 @@
+import { Observable } from "rxjs";
+import { {{className}}DTO } from "../remote/dto/{{name}}.dto";
+
+export abstract class {{className}}RemoteDataSource {
+    abstract get{{className}}(params : string): Observable<{{className}}DTO>;
+}

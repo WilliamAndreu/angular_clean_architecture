@@ -1,0 +1,48 @@
+import { Mapper } from 'src/core/core-interface/mapper';
+import { {{className}}DTO } from '../../../datasource/{{name}}/remote/dto/{{name}}.dto';
+import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity';
+
+
+
+export class {{className}}DtoRepositoryMapper extends Mapper<
+{{className}}DTO,
+  {{className}}Entity
+> {
+
+
+
+  mapTo(param: {{className}}DTO): {{className}}Entity {
+    return {
+      id: param.id,
+      title: param.title,
+      description: param.description,
+      price: param.price,
+      discountPercentage: param.discountPercentage,
+      rating: param.rating,
+      stock: param.stock,
+      brand: param.brand,
+      category: param.category,
+      thumbnail: param.thumbnail,
+      images: param.images,
+    };
+  }
+
+
+
+
+  mapFrom(param: {{className}}Entity): {{className}}DTO {
+    return {
+      id: param.id,
+      title: param.title,
+      description: param.description,
+      price: param.price,
+      discountPercentage: param.discountPercentage,
+      rating: param.rating,
+      stock: param.stock,
+      brand: param.brand,
+      category: param.category,
+      thumbnail: param.thumbnail,
+      images: param.images,
+    };
+  }
+}

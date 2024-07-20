@@ -1,0 +1,18 @@
+import { Injectable } from '@angular/core';
+import { {{className}}LocalDataSource } from '@data/datasource/{{name}}/source/{{name}}-local-datasource';
+import { {{className}}DBO } from '../local/dbo/{{name}}.dbo';
+
+@Injectable()
+export class {{className}}LocalDataSourceImp extends {{className}}LocalDataSource{
+
+  constructor() {
+    super();
+  }
+
+  override get{{className}}(params: string): {{className}}DBO {
+    const {{name}}FromLocalStorage = JSON.parse(localStorage.getItem("{{name}}")!) as {{className}}DBO;
+    return {{name}}FromLocalStorage;
+}
+
+
+  }
