@@ -92,9 +92,11 @@ Aun esta por determinar la forma de despliegue que se usara en este proyecto.
 
 ## Contribuidores ✒️
 
-* **William Andres Aveiga**
 * **Rafael Perera**
 * **Pablo Serna**
+* **Gabriel Puglisi** - [Angular Developer](https://www.linkedin.com/in/gabriel-puglisi-381998159/)
+* **Marcel del Toro Sempere**
+* **William Andres Aveiga** - [Angular Developer](https://github.com/WilliamAndreu)
 
 ⌨️ con ❤️ para la comunidad de Angular 😊
 
