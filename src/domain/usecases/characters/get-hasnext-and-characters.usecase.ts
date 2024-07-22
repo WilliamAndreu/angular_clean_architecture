@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { UseCase } from 'src/core/core-interface/use-case';
+import { UseCase } from '@interface-core/use-case';
 import { CharactersRepository } from '../../repositories/characters/characters.repository';
 import { CharactersEntity } from '../../entities/characters/characters-entity.model';
 import { Injectable } from '@angular/core';

@@ -1,7 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
   preset: 'jest-preset-angular',
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   moduleNameMapper: {
     '@app/(.*)': '<rootDir>/src/app/$1',
@@ -15,6 +15,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/src/test.ts'],
   collectCoverageFrom: [
     './src/**',
+    'src/core/core-interface/use-case.ts'
   ],
   "coveragePathIgnorePatterns" : [
     "<rootDir>/src/index.html",
