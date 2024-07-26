@@ -7,8 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest --runInBand --setupFilesAfterEnv ./setup-jest.ts",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test:watch": "jest --runInBand --setupFilesAfterEnv ./setup-jest.ts --watch",
+    "test:coverage": "jest --runInBand --setupFilesAfterEnv ./setup-jest.ts --coverage",
     "domain": " node scripts/generate-domain/index.js"
   },
   "private": true,
