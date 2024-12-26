@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CharactersRepository } from '@repositories/characters/characters.repository';
 import { CharactersImpRepository } from './repositories/character/characters-implementation.repository';
 import { GetHasNextAndCharactersUseCase } from '@usecases/characters/get-hasnext-and-characters.usecase';
@@ -11,14 +11,12 @@ import { CharactersLocalDataSource } from './datasource/characters/source/charac
 import { CharactersLocalDataSourceImp } from './datasource/characters/local/characters-remote-datasource-imp';
 
 
-@NgModule({
-  providers: [
-    Request,
-    GetHasNextAndCharactersUseCase,
-    { provide: CharactersRepository, useClass: CharactersImpRepository },
-    { provide: CharactersRemoteDataSource, useClass: CharactersRemoteDataSourceImp },
-    { provide: CharactersLocalDataSource, useClass: CharactersLocalDataSourceImp },
-  ],
-  imports: [CommonModule, HttpClientModule],
-})
+@NgModule({ imports: [CommonModule], providers: [
+        Request,
+        GetHasNextAndCharactersUseCase,
+        { provide: CharactersRepository, useClass: CharactersImpRepository },
+        { provide: CharactersRemoteDataSource, useClass: CharactersRemoteDataSourceImp },
+        { provide: CharactersLocalDataSource, useClass: CharactersLocalDataSourceImp },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class DataModule {}
