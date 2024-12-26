@@ -4,8 +4,8 @@ import { CharactersListViewComponent } from './view/characters-list-view.compone
 import { CharactersViewModel } from '@views/characters-list-view/viewmodel/characters.viewmodel';
 import { FormsModule } from '@angular/forms';
 import { CharactersListViewRoutingModule } from './characters-list-view-routing.module';
-import { PipesModule } from '@pipes/pipes.module';
 import { CharactersDI } from '@di/characters.di';
+import { FilterCharactersByNamePipe } from '@pipes/filter-characters-by-name.pipe';
 
 @NgModule({
   declarations: [CharactersListViewComponent],
@@ -14,7 +14,7 @@ import { CharactersDI } from '@di/characters.di';
     CommonModule,
     CharactersDI,
     FormsModule,
-    PipesModule,
+    FilterCharactersByNamePipe,
   ],
   providers: [CharactersViewModel],
 })

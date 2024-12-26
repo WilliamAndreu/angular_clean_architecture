@@ -5,7 +5,7 @@ import { CharacterResult } from '@models/characters/characters-entity.model';
 
 @Pipe({
     name: 'filterCharactersByName',
-    standalone: false
+    standalone: true
 })
 export class FilterCharactersByNamePipe implements PipeTransform {
   transform(

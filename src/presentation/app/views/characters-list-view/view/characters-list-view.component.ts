@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { CharactersEntity } from '@models/characters/characters-entity.model';
 import { CharactersViewModel } from '@views/characters-list-view/viewmodel/characters.viewmodel';
 
@@ -9,22 +9,25 @@ import { CharactersViewModel } from '@views/characters-list-view/viewmodel/chara
     standalone: false
 })
 export class CharactersListViewComponent implements OnInit {
-  public charactersList?: CharactersEntity;
-  public searchTerm = '';
+  searchTermSignal = signal('');
 
-  constructor(private viewModel: CharactersViewModel) {}
+
+  constructor(public viewModel: CharactersViewModel) {}
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    if (this.isScrolledToBottom() && this.searchTerm === '') {
+    if (this.isScrolledToBottom() && this.searchTermSignal() === '') {
       this.viewModel.loadMoreCharacters();
     }
   }
 
   ngOnInit(): void {
-    this.viewModel.charactersSubject!.subscribe((value) => {
-      this.charactersList = value;
-    });
+   
+  }
+
+  updateSearchTerm(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchTermSignal.set(input.value);
   }
 
   private isScrolledToBottom(): boolean {
