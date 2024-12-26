@@ -3,9 +3,10 @@ import { CharactersEntity } from '@models/characters/characters-entity.model';
 import { CharactersViewModel } from '@views/characters-list-view/viewmodel/characters.viewmodel';
 
 @Component({
-  selector: 'app-characters-list-view',
-  templateUrl: './characters-list-view.component.html',
-  styleUrls: ['./characters-list-view.component.scss'],
+    selector: 'app-characters-list-view',
+    templateUrl: './characters-list-view.component.html',
+    styleUrls: ['./characters-list-view.component.scss'],
+    standalone: false
 })
 export class CharactersListViewComponent implements OnInit {
   public charactersList?: CharactersEntity;

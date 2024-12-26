@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CharactersRepository } from '@repositories/characters/characters.repository';
-import { CharactersImpRepository } from './repositories/character/characters-implementation.repository';
-import { GetHasNextAndCharactersUseCase } from '@usecases/characters/get-hasnext-and-characters.usecase';
-import { CharactersRemoteDataSource } from './datasource/characters/source/characters-remote-datasource';
-import { CharactersRemoteDataSourceImp } from './datasource/characters/remote/characters-remote-datasource-imp';
 import { Request } from 'src/core/core-interface/request';
-import { CharactersLocalDataSource } from './datasource/characters/source/characters-local-datasource';
-import { CharactersLocalDataSourceImp } from './datasource/characters/local/characters-remote-datasource-imp';
+import { GetHasNextAndCharactersUseCase } from '@usecases/characters/get-hasnext-and-characters.usecase';
+import { CharactersImpRepository } from '@data/repositories/character/characters-implementation.repository';
+import { CharactersRemoteDataSourceImp } from '@data/datasource/characters/remote/characters-remote-datasource-imp';
+import { CharactersRemoteDataSource } from '@data/datasource/characters/source/characters-remote-datasource';
+import { CharactersLocalDataSource } from '@data/datasource/characters/source/characters-local-datasource';
+import { CharactersLocalDataSourceImp } from '@data/datasource/characters/local/characters-remote-datasource-imp';
 
 
 @NgModule({ imports: [CommonModule], providers: [
@@ -19,4 +19,4 @@ import { CharactersLocalDataSourceImp } from './datasource/characters/local/char
         { provide: CharactersLocalDataSource, useClass: CharactersLocalDataSourceImp },
         provideHttpClient(withInterceptorsFromDi()),
     ] })
-export class DataModule {}
+export class CharactersDI {}
