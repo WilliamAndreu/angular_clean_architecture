@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Pipe({
-    name: 'secureImg'
+    name: 'secureImg',
+    standalone: false
 })
 export class SecurePipe implements PipeTransform {
 

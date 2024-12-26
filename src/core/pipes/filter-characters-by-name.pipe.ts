@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { CharacterResult } from '@models/characters/characters-entity.model';
 
 @Pipe({
-  name: 'filterCharactersByName',
+    name: 'filterCharactersByName',
+    standalone: true
 })
 export class FilterCharactersByNamePipe implements PipeTransform {
   transform(

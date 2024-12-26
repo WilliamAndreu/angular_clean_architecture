@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { GetHasNextAndCharactersUseCase } from '@usecases/characters/get-hasnext-and-characters.usecase';
 import { CharactersEntity } from '@models/characters/characters-entity.model';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class CharactersViewModel {
-  public charactersSubject = new BehaviorSubject<CharactersEntity>(
-    {} as CharactersEntity
-  );
+  public charactersSignal = signal<CharactersEntity>({} as CharactersEntity);
+
   constructor(
     private getHasNextAndCharactersUseCase: GetHasNextAndCharactersUseCase
   ) {
@@ -21,7 +20,7 @@ export class CharactersViewModel {
   public loadMoreCharacters(): void {
     if (this.hasMoreCharacters()) {
       const nextPage = this.getPageNumberFromUrl(
-        this.charactersSubject?.value?.info!.next!
+        this.charactersSignal()?.info!.next!
       );
       this.getCharacters(nextPage);
     }
@@ -30,11 +29,11 @@ export class CharactersViewModel {
     this.getHasNextAndCharactersUseCase
       .execute({ page, needRequest: true })
       .subscribe((value) => {
-        this.charactersSubject?.next(value);
+        this.charactersSignal.set(value)
       });
   }
   private hasMoreCharacters(): boolean {
-    return !!this.charactersSubject?.value?.info?.next;
+    return !!this.charactersSignal()?.info?.next;
   }
 
   private getPageNumberFromUrl(url: string): number {

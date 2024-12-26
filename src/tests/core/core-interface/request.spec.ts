@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Injector } from '@angular/core';
 import { Request } from '@interface-core/request';  // Ajusta la ruta según tu estructura de proyecto
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Request', () => {
   let service: Request;
@@ -10,17 +10,19 @@ describe('Request', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         Request,
         {
-          provide: Injector,
-          useValue: {
-            get: (token: any) => TestBed.inject(token)
-          }
-        }
-      ]
-    });
+            provide: Injector,
+            useValue: {
+                get: (token: any) => TestBed.inject(token)
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
 
     service = TestBed.inject(Request);
     httpMock = TestBed.inject(HttpTestingController);
