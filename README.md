@@ -6,7 +6,7 @@
 Architecture based on clean and solid principles.
 
 
-[Angular Architecture Demo](https://angular-clean-architecture-murex.vercel.app/)
+[Angular Architecture Demo](https://angular-clean-architecture-eight.vercel.app/)
 
 ## Beginning 🚀
 
