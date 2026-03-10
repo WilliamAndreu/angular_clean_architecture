@@ -1,0 +1,24 @@
+<div class="min-h-screen">
+  <app-detail-header backLabel="Products" backRoute="/" />
+
+  <main class="max-w-[1200px] mx-auto px-8 py-12 max-sm:px-5 max-sm:py-8">
+    @if (vm.viewState.isLoading()) {
+      <app-product-detail-loading />
+    }
+
+    @if (vm.viewState.error(); as error) {
+      <app-product-detail-error [message]="error" />
+    }
+
+    @if (vm.viewState.product(); as product) {
+      <div class="grid grid-cols-2 gap-16 max-md:grid-cols-1 max-md:gap-10">
+        <app-product-gallery
+          [product]="product"
+          [activeImage]="vm.viewState.activeImage()"
+          (activeImageChange)="vm.setActiveImage($event)"
+        />
+        <app-product-info [product]="product" />
+      </div>
+    }
+  </main>
+</div>

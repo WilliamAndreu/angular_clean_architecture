@@ -1,22 +1,22 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable, Injector } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class Request {
-
-  protected basePath = ``;
-  protected http: HttpClient = this.injector.get(HttpClient);
-
-  constructor(protected injector: Injector) {}
+  private http = inject(HttpClient);
 
   doRequest<T>(
-    method: keyof HttpClient,
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
     url: string,
-    body: unknown = undefined,
-    params?: keyof HttpParams,
+    body?: unknown,
+    params?: Record<string, string | number>,
   ): Observable<T> {
-    return this.http.request<T>(method,url, {body})
-  }
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const httpParams = params
+      ? new HttpParams({ fromObject: params as Record<string, string> })
+      : undefined;
 
+    return this.http.request<T>(method, url, { headers, body, params: httpParams });
+  }
 }

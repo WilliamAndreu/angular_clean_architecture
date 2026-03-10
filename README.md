@@ -1,109 +1,217 @@
-# ![Angular logo][]
+# Angular Architecture
 
-![](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white) ![](https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white) ![](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)  ![](	https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-# Angular Clean Architecture
+A production-ready **Clean Architecture + MVVM** template for Angular applications. Built from scratch with the latest Angular features: signals, zoneless change detection, and standalone components.
 
-Architecture based on clean and solid principles.
+---
 
+## Tech Stack
 
-[Angular Architecture Demo](https://angular-clean-architecture-eight.vercel.app/)
+| Technology | Version |
+|---|---|
+| Angular | 21.2 |
+| TypeScript | ~5.9 |
+| RxJS | ~7.8 |
+| Vitest | ^4.0 |
+| Tailwind CSS | ^4.2 |
+| @ngx-translate/core | ^17.0 |
+| Node.js | ≥ 22 |
+| npm | ≥ 11 |
 
-## Beginning 🚀
+---
 
-_These instructions will allow you to get a copy of the project running on your local computer for development and testing purposes.._
-
-### Pre-requisites 📋
-
-| Tool |  Version                |
-| :-------- |  :------------------------- |
-| `Node Js` |**20.15.1** |
-| `Angular Cli` | **19.0.6** |
-| `Pakage Manager (NPM)` |  **10.8.3** |
-| `OS` |  **Sonoma 14.5** |
-
-### Start-up 🔧
-
-Clone the project
+## Getting Started
 
 ```bash
-  git clone https://github.com/WilliamAndreu/angular_clean_architecture
+# Install dependencies
+npm install
+
+# Start dev server → http://localhost:4200
+npm start
+
+# Production build
+npm run build
 ```
 
-Go to the project directory
+---
+
+## Testing
 
 ```bash
-  cd my-project
+# Run all tests
+npm test
+
+# Run with coverage report
+npm test -- --coverage
+
+# Open HTML coverage report
+open coverage/index.html
 ```
 
-Install dependencies
+Tests are written with **Vitest** (no Jest, no Karma). Pure logic — usecases, mappers, utils — runs without Angular TestBed. Components that require DI use `TestBed.configureTestingModule`.
 
-```bash
-  npm install
-```
+---
 
-## Automatic domain generation 📌
+## Architecture
 
- In order to generate a domain and its layers quickly we can use the script included in this repository:
-
-```bash
-  npm run domain
-```
-
-After asking for a name to create the domain, we can see that the necessary files have been generated to be able to import, edit and execute our use cases. The files that are created are already functional, so there is no need to edit them in the first instance providing an example of calls to an Api as well as its saving in local and the use of repositories.
-
-Finally it is worth noting that the script itself will give us through the console all the necessary imports for us to paste them in the data module.
-Example:
-
-```bash
-  To use the domain you must add these imports in the data.module.ts file:
-
-         import {GetProductUseCase} from "@usecases/product/get-product.usecase";
-         import {ProductRepository} from "@repositories/product/product.repository";
-         import {ProductRemoteDataSource} from "@data/datasource/product/source/product-remote-datasource";
-         import {ProductImpRepository} from "@data/repositories/product/product-implementation.repository";
-         import {ProductRemoteDataSourceImp} from "@data/datasource/product/remote/product-remote-datasource-imp";
-         import {ProductLocalDataSourceImp} from "@data/datasource/product/local/product-local-datasource-imp";
-         import {ProductLocalDataSource} from "@data/datasource/product/source/product-local-datasource";
-
-
- Module implementation:
-
-          GetProductUseCase,
-         { provide: ProductRepository, useClass: ProductImpRepository },
-         { provide: ProductRemoteDataSource, useClass: ProductRemoteDataSourceImp },
-         { provide: ProductLocalDataSource, useClass: ProductLocalDataSourceImp },
+The project follows **Clean Architecture** with a strict dependency rule: outer layers depend on inner layers, never the reverse.
 
 ```
+src/
+├── core/                          # Framework-agnostic utilities
+│   ├── core-interface/            # UseCase, Mapper, ViewState interfaces
+│   ├── directives/                # ImgFallbackDirective
+│   ├── environments/              # environment.ts / environment.prod.ts
+│   ├── errors/                    # AppError, NetworkError, UnauthorizedError…
+│   ├── guards/                    # AuthGuard, GuestGuard
+│   ├── interceptors/              # publicInterceptor, authInterceptor
+│   ├── pipes/                     # PricePipe
+│   ├── services/storage/          # StorageSource (abstract) + LocalStorageService
+│   └── utils/                     # calcOriginalPrice
+│
+├── data/                          # Infrastructure layer
+│   ├── datasource/
+│   │   ├── products/
+│   │   │   ├── dto/               # ProductDto, ProductsDto
+│   │   │   ├── source/            # Abstract remote + local datasources
+│   │   │   ├── remote/            # ProductsRemoteDataSourceImp (HTTP)
+│   │   │   └── local/             # ProductsLocalDataSourceImp (cache + TTL)
+│   │   └── auth/                  # Same structure for auth
+│   ├── repositories/
+│   │   └── products/
+│   │       ├── mappers/           # ProductDtoToEntityMapper
+│   │       └── products-implementation.repository.ts
+│   └── di/                        # provideProductsDI(), provideAuthDI()
+│
+├── domain/                        # Business rules — zero framework dependencies
+│   ├── entities/                  # ProductEntity, UserEntity, LoginEntity…
+│   ├── repositories/              # Abstract repository contracts
+│   └── usecases/                  # GetProductsUseCase, LoginUseCase…
+│
+├── presentation/                  # UI layer
+│   ├── app/
+│   │   ├── views/
+│   │   │   ├── products-list-view/
+│   │   │   ├── product-detail-view/
+│   │   │   ├── user-detail-view/
+│   │   │   └── login-view/
+│   │   ├── layouts/               # PublicLayout, PrivateLayout
+│   │   ├── app.config.ts          # Root providers (DI, router, i18n)
+│   │   └── app.routes.ts
+│   └── shared/
+│       └── components/            # DetailHeader (reusable)
+│
+├── assets/
+│   └── i18n/en.json               # Translation strings
+│
+└── tests/                         # Mirrors src/ structure
+    ├── core/
+    ├── data/
+    ├── domain/
+    └── presentation/
+```
 
-## Versioning 📌
+### Layers at a glance
 
-We will use manual versioning of the app by increasing the version value with each upload to production.
+```
+┌──────────────────────────────────────────────────────────┐
+│                      Presentation                        │
+│          Components · ViewModels · Signals State         │
+├──────────────────────────────────────────────────────────┤
+│                        Domain                            │
+│        Entities · Repositories (abstract) · UseCases     │
+├──────────────────────────────────────────────────────────┤
+│                         Data                             │
+│        Repositories (impl) · DataSources · Mappers       │
+├──────────────────────────────────────────────────────────┤
+│                         Core                             │
+│         Interfaces · Utils · Interceptors · Errors       │
+└──────────────────────────────────────────────────────────┘
+           dependency arrow always points downward ↑
+```
 
-## Running the tests ⚙️
+---
 
-To run the tests with Jest just execute:
+## Key Patterns
+
+### MVVM per feature
+
+Each view is split into three files with clear responsibilities:
+
+```
+views/products-list-view/
+├── viewmodel/
+│   ├── products.state.ts        ← signals (single source of truth)
+│   └── products.viewmodel.ts    ← orchestrates usecase calls + state updates
+└── products-list-view.ts        ← template only, reads viewState signals
+```
+
+### Dependency injection per route
+
+Each feature registers its own providers via a `provideXxxDI()` function scoped to the route — no global pollution:
+
+```ts
+// private-layout.routes.ts
+{
+  path: 'products',
+  providers: [provideProductsDI()],
+  loadComponent: () => import('./views/products-list-view/...')
+}
+```
+
+### Cache with TTL
+
+The local datasource wraps cached responses with a timestamp and invalidates them after **1 hour**:
+
+```ts
+// save
+{ data: ProductsDto, cachedAt: Date.now() }
+
+// read — returns null if stale
+if (Date.now() - cached.cachedAt > PRODUCTS_CACHE_TTL_MS) return null;
+```
+
+### Typed error handling
+
+Errors are typed and translated across three layers:
+
+```
+HTTP response
+    ↓ interceptor maps status code
+AppError subclass (NetworkError | UnauthorizedError | NotFoundError | ServerError)
+    ↓ usecase wraps with business context via catchError
+viewmodel stores err.messageKey (i18n key string)
+    ↓ template renders
+{{ error | translate }}
+```
+
+| Class | HTTP status | i18n key |
+|---|---|---|
+| `NetworkError` | 0 (offline) | `errors.network` |
+| `UnauthorizedError` | 401 | `errors.unauthorized` |
+| `NotFoundError` | 404 | `errors.not_found` |
+| `ServerError` | 5xx | `errors.server` |
+| `AppError` | default | `errors.unknown` |
+
+### i18n
+
+Translation keys live in `src/assets/i18n/en.json`. Templates use `| translate` from `@ngx-translate/core`. Viewmodels always store the **key**, never the translated string — so the UI layer owns the translation concern.
+
+---
+
+## Code Generation
+
+Generate a complete domain layer (entity, repository, usecases, datasources, mappers, DI provider) interactively:
+
 ```bash
- npm run test
- ```
+npm run domain
+```
 
-## Deployment 📦
+---
 
-This project has a demo deployed using vercel for environment configuration and automatic deployment.
+## Other Commands
 
-## Built with 🛠️
-
-* [Angular](https://angular.io/) - The web framework used
-* [VisualStudio](https://visualstudio.microsoft.com/es/) - Development IDE
-* [Node Js](https://nodejs.org/es) - JavaScript execution environment
-
-## Contributors ✒️
-
-* **Rafael Perera**
-* **Pablo Serna**
-* **Gabriel Puglisi** - [Angular Developer](https://www.linkedin.com/in/gabriel-puglisi-381998159/)
-* **Marcel del Toro Sempere**
-* **William Andres Aveiga** - [Angular Developer](https://github.com/WilliamAndreu)
-
-⌨️ with ❤️ for the Angular community 😊
-
-[Angular logo]: https://raw.githubusercontent.com/rudoapps/hybrid-storage/main/angular/images/angular_logo.png
+```bash
+npm run lint          # ESLint
+npm run format        # Prettier (write)
+npm run format:check  # Prettier (check only)
+```

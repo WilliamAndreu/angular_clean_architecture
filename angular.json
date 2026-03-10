@@ -1,17 +1,18 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": false
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "clean-architecture-angular": {
+    "angular-architecture": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
-        }
+        "@schematics/angular:component": { "style": "scss", "standalone": true },
+        "@schematics/angular:directive":  { "standalone": true },
+        "@schematics/angular:pipe":       { "standalone": true }
       },
       "root": "",
       "sourceRoot": "src",
@@ -20,53 +21,50 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist/clean-architecture-angular"
-            },
-            "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              {"glob": "**/*", "input": "src/presentation/assets", "output": "./assets/"}
-                 ],
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/core/assets",
+                "output": "assets/"
+              }
+            ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": [],
-            "browser": "src/main.ts"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "1mb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1MB",
+                  "maximumError": "1MB"
                 }
               ],
+              "outputHashing": "all",
               "fileReplacements": [
                 {
                   "replace": "src/core/environments/environment.ts",
                   "with": "src/core/environments/environment.prod.ts"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -75,32 +73,22 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "clean-architecture-angular:build:production"
+              "buildTarget": "angular-architecture:build:production"
             },
             "development": {
-              "buildTarget": "clean-architecture-angular:build:development"
+              "buildTarget": "angular-architecture:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n",
-          "options": {
-            "buildTarget": "clean-architecture-angular:build"
-          }
-        },
         "test": {
-          "builder": "@angular-builders/jest:run",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "configPath": "jest.config.js",
-            "tsConfig": "tsconfig.spec.json"
-          
+            "tsConfig": "tsconfig.spec.json",
+            "buildTarget": "angular-architecture:build:development"
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

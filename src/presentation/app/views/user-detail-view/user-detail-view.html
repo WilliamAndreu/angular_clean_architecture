@@ -1,0 +1,17 @@
+<div class="min-h-screen flex flex-col">
+  <app-detail-header backLabel="Products" backRoute="/" />
+
+  <main class="flex-1 flex items-center justify-center px-5 py-16">
+    @if (vm.viewState.isLoading()) {
+      <app-user-detail-loading />
+    }
+
+    @if (vm.viewState.error(); as error) {
+      <app-user-detail-error [message]="error" />
+    }
+
+    @if (vm.viewState.user(); as user) {
+      <app-user-profile-card [user]="user" (logout)="vm.logout()" />
+    }
+  </main>
+</div>

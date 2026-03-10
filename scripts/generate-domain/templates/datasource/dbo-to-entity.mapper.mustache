@@ -1,0 +1,19 @@
+import { Mapper } from '@interface-core/mapper';
+import { {{className}}DBO } from '@data/datasource/{{name}}/local/dbo/{{name}}.dbo';
+import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity.model';
+
+export class {{className}}DboToEntityMapper extends Mapper<{{className}}DBO, {{className}}Entity> {
+  mapFrom(param: {{className}}DBO): {{className}}Entity {
+    return {
+      // TODO: map DBO fields to Entity fields
+      ...param,
+    } as unknown as {{className}}Entity;
+  }
+
+  mapTo(param: {{className}}Entity): {{className}}DBO {
+    return {
+      // TODO: map Entity fields to DBO fields
+      ...param,
+    } as unknown as {{className}}DBO;
+  }
+}

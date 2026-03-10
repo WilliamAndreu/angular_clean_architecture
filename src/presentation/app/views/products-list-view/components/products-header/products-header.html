@@ -1,0 +1,69 @@
+<div class=" w-full px-10 py-5 flex items-center gap-6
+            max-lg:px-8 max-sm:px-5 max-sm:py-4">
+
+  <div class="flex items-center gap-3 shrink-0">
+    <div class="w-8 h-8 rounded-lg border border-white/[0.08] bg-white/[0.03]
+                flex items-center justify-center text-white/60 text-[11px] font-bold tracking-tight">
+      ST
+    </div>
+    <div>
+      <p class="text-[10px] font-medium tracking-[0.22em] uppercase text-white/30 leading-none mb-0.5">{{ 'products.header.store' | translate }}</p>
+      <h1 class="text-[18px] font-semibold text-white/90 leading-none">{{ 'products.header.title' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="flex-1"></div>
+
+  <div class="relative w-72 shrink-0 max-sm:hidden">
+    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/25 pointer-events-none"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input
+      type="search"
+      autocomplete="off"
+      [placeholder]="'products.header.search' | translate"
+      class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl
+             py-2.5 pl-10 pr-4 text-[13px] text-white/80 placeholder:text-white/20
+             outline-none transition-all duration-200
+             focus:bg-white/[0.06] focus:border-white/[0.16]"
+      [value]="searchTerm"
+      (input)="searchChange.emit($any($event.target).value)"
+    />
+    @if (searchTerm) {
+      <span class="absolute right-3.5 top-1/2 -translate-y-1/2
+                   text-[11px] text-white/25 pointer-events-none tabular-nums">
+        {{ resultsCount }}
+      </span>
+    }
+  </div>
+
+  <a routerLink="/profile"
+     class="shrink-0 text-[12px] text-white/35 hover:text-white/65 transition-colors duration-200">
+    Profile
+  </a>
+
+</div>
+
+<!-- Search row mobile -->
+<div class="hidden max-sm:block px-5 pb-3">
+  <div class="relative w-full">
+    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/25 pointer-events-none"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input
+      type="search"
+      autocomplete="off"
+      [placeholder]="'products.header.search' | translate"
+      class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl
+             py-2.5 pl-10 pr-4 text-[13px] text-white/80 placeholder:text-white/20
+             outline-none transition-all duration-200
+             focus:bg-white/[0.06] focus:border-white/[0.16]"
+      [value]="searchTerm"
+      (input)="searchChange.emit($any($event.target).value)"
+    />
+  </div>
+</div>
