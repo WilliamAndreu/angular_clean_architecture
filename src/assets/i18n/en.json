@@ -1,0 +1,19 @@
+{
+  "errors": {
+    "network": "No internet connection",
+    "unauthorized": "Session expired. Please log in again",
+    "not_found": "Resource not found",
+    "server": "Server error. Please try again",
+    "unknown": "An unexpected error occurred",
+    "products": { "load_failed": "Could not load products" },
+    "auth": { "login_failed": "Invalid credentials" }
+  },
+  "products": {
+    "header": { "store": "Store", "title": "Products", "search": "Search products" },
+    "availability": "Availability",
+    "stock": "Stock",
+    "units": "units"
+  },
+  "profile": { "email": "Email", "gender": "Gender", "sign_out": "Sign out" },
+  "common": { "back": "Products", "loading": "Loading...", "retry": "Retry" }
+}

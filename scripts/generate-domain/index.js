@@ -1,37 +1,37 @@
-const prompt = require("prompt-sync")({ sigint: true });
-const fs = require("fs");
-const {generateDataFiles } = require("./data");
-const {generateDomainFiles } = require("./domain");
-const {showImportsDomainModule } = require("./utils/consoleUtils");
+const prompt = require('prompt-sync')({ sigint: true });
+const fs = require('fs');
+const { generateDataFiles } = require('./data');
+const { generateDomainFiles } = require('./domain');
+const { showSuccess } = require('./utils/consoleUtils');
 
-
-
+function toPascalCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 async function main() {
-  const name = prompt("Please enter your domain name: ").trim().toLowerCase();
-  const dataPath = `./src/data/datasource/${name}`;
+  const name = prompt('Domain name (e.g. products): ').trim().toLowerCase();
+
+  if (!name) {
+    console.error('\x1b[31mError: domain name cannot be empty\x1b[0m');
+    process.exit(1);
+  }
+
+  const domainExists = fs.existsSync(`./src/data/datasource/${name}`);
+  if (domainExists) {
+    console.error(`\x1b[31mError: domain '${name}' already exists\x1b[0m`);
+    process.exit(1);
+  }
+
+  const domain = { name, className: toPascalCase(name) };
 
   try {
-      if (!fs.existsSync(dataPath) && !(!name || name.length === 0)) {
-        await generateDataFiles({ name, className: name.charAt(0).toUpperCase() + name.slice(1) });
-        await generateDomainFiles({ name, className: name.charAt(0).toUpperCase() + name.slice(1) });
-        await  showImportsDomainModule({ name, className: name.charAt(0).toUpperCase() + name.slice(1) });
-      } else {
-        if(!name || name.length === 0) {
-          console.log("\x1b[31m Invalid domain name");
-        }else {
-          if(fs.existsSync(dataPath)) {
-          console.log("\x1b[31m Domain already exists:", name);
-        }
-        }    
-      }
+    await generateDomainFiles(domain);
+    await generateDataFiles(domain);
+    showSuccess(domain);
   } catch (err) {
-      console.error("Error:", err);
+    console.error('\x1b[31mError generating domain:\x1b[0m', err);
+    process.exit(1);
   }
 }
 
 main();
-
-
-
-

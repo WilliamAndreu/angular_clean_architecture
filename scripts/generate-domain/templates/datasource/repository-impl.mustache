@@ -1,39 +1,32 @@
-import {Observable, map, of } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { {{className}}DboRepositoryMapper } from './mappers/{{name}}-dbo-repository.mapper';
-import { {{className}}DtoRepositoryMapper } from './mappers/{{name}}-dto-repository.mapper';
-import { {{className}}Repository } from 'src/domain/repositories/{{name}}/{{name}}.repository';
-import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity';
-import { {{className}}RemoteDataSource } from '../../datasource/{{name}}/source/{{name}}-remote-datasource';
-import { {{className}}LocalDataSource } from '../../datasource/{{name}}/source/{{name}}-local-datasource';
+import { inject, Injectable } from '@angular/core';
+import { Observable, switchMap, tap, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { {{className}}Repository } from '@repositories/{{name}}/{{name}}.repository';
+import { {{className}}Entity } from '@models/{{name}}/{{name}}-entity.model';
+import { {{className}}RemoteDataSource } from '@data/datasource/{{name}}/source/{{name}}-remote.datasource';
+import { {{className}}LocalDataSource } from '@data/datasource/{{name}}/source/{{name}}-local.datasource';
+import { {{className}}DtoToEntityMapper } from './mappers/{{name}}-dto-to-entity.mapper';
+import { {{className}}DboToEntityMapper } from './mappers/{{name}}-dbo-to-entity.mapper';
 
 @Injectable()
 export class {{className}}ImpRepository extends {{className}}Repository {
+  private readonly remoteDataSource = inject({{className}}RemoteDataSource);
+  private readonly localDataSource = inject({{className}}LocalDataSource);
 
+  private readonly dtoMapper = new {{className}}DtoToEntityMapper();
+  private readonly dboMapper = new {{className}}DboToEntityMapper();
 
-  {{name}}DboMapper = new {{className}}DboRepositoryMapper();
-  {{name}}DtoMapper = new {{className}}DtoRepositoryMapper();
-
-
-  constructor(private {{name}}RemoteDataSource: {{className}}RemoteDataSource, private {{name}}LocalDataSource: {{className}}LocalDataSource) {
-    super();
+  override get{{className}}(params: unknown): Observable<{{className}}Entity> {
+    return this.localDataSource.get{{className}}(params).pipe(
+      switchMap((cached) => {
+        if (cached !== null) {
+          return of(this.dboMapper.mapFrom(cached));
+        }
+        return this.remoteDataSource.get{{className}}(params).pipe(
+          tap((dto) => this.localDataSource.save{{className}}(params, dto)),
+          map((dto) => this.dtoMapper.mapFrom(dto)),
+        );
+      }),
+    );
   }
-
-  override get{{className}}(params: string): Observable<{{className}}Entity> {
-    
-
-  const localData = localStorage.getItem("{{name}}");
-  if (localData == null) {
-     return this.{{name}}RemoteDataSource.get{{className}}(params).pipe(
-        map(this.{{name}}DtoMapper.mapTo),
-        map(value => {
-            localStorage.setItem("{{name}}", JSON.stringify(value));
-            return value;
-        })
-        ) 
-  }
-     return of(this.{{name}}DboMapper.mapTo(this.{{name}}LocalDataSource.get{{className}}(params))); 
-
-  }
-
 }
