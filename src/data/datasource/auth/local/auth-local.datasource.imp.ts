@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { StorageSource } from 'src/core/services/storage/source/storage-source.interface';
-import { TokensEntity } from '@models/auth/auth-entity.model';
+import { TokensDbo } from './dbo/auth.dbo';
 import { AuthLocalDataSource } from '../source/auth-local.datasource';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class AuthLocalDataSourceImp extends AuthLocalDataSource {
   private readonly ACCESS_TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
 
-  override saveTokens(tokens: TokensEntity): void {
+  override saveTokens(tokens: TokensDbo): void {
     this.storage.set(this.ACCESS_TOKEN_KEY, tokens.accessToken);
     this.storage.set(this.REFRESH_TOKEN_KEY, tokens.refreshToken);
   }
