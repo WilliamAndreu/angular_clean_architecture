@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
-import { ProductDto, ProductsDto } from '../dto/product.dto';
+import { ProductDto } from '../remote/dto/product.dto';
+import { ProductsDto } from '../remote/dto/products.dto';
 
 export abstract class ProductsRemoteDataSource {
   abstract getProducts(limit: number, skip: number): Observable<ProductsDto>;

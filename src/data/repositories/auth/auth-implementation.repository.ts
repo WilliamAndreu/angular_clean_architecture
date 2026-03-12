@@ -5,6 +5,7 @@ import { AuthRepository } from '@repositories/auth/auth.repository';
 import { AuthRemoteDataSource } from '@data/datasource/auth/source/auth-remote.datasource';
 import { AuthLocalDataSource } from '@data/datasource/auth/source/auth-local.datasource';
 import { LoginDtoToEntityMapper, UserDtoToEntityMapper } from './mappers/auth-dto-to-entity.mapper';
+import { TokensDboToEntityMapper } from './mappers/auth-dbo-to-entity.mapper';
 import { LoginEntity, TokensEntity, UserEntity } from '@models/auth/auth-entity.model';
 
 @Injectable()
@@ -13,14 +14,17 @@ export class AuthImpRepository extends AuthRepository {
   private readonly local = inject(AuthLocalDataSource);
   private readonly loginMapper = inject(LoginDtoToEntityMapper);
   private readonly userMapper = inject(UserDtoToEntityMapper);
+  private readonly tokensDboMapper = inject(TokensDboToEntityMapper);
 
   override login(username: string, password: string): Observable<LoginEntity> {
     return this.remote.login(username, password).pipe(
       map((dto) => this.loginMapper.mapFrom(dto)),
-      tap((entity) => this.local.saveTokens({
-        accessToken: entity.accessToken,
-        refreshToken: entity.refreshToken,
-      })),
+      tap((entity) => this.local.saveTokens(
+        this.tokensDboMapper.mapTo({
+          accessToken: entity.accessToken,
+          refreshToken: entity.refreshToken,
+        }),
+      )),
     );
   }
 
@@ -34,7 +38,10 @@ export class AuthImpRepository extends AuthRepository {
     const token = this.local.getRefreshToken();
     if (!token) return throwError(() => new Error('No refresh token available'));
     return this.remote.refreshToken(token).pipe(
-      tap((tokens) => this.local.saveTokens(tokens)),
+      map((dto) => this.tokensDboMapper.mapFrom({ accessToken: dto.accessToken, refreshToken: dto.refreshToken })),
+      tap((entity) => this.local.saveTokens(
+        this.tokensDboMapper.mapTo(entity),
+      )),
     );
   }
 }

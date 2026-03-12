@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Mapper } from '@interface-core/mapper';
-import { LoginDto, UserDto } from '@data/datasource/auth/dto/auth.dto';
+import { LoginDto, UserDto } from '@data/datasource/auth/remote/dto/auth.dto';
 import { LoginEntity, UserEntity } from '@models/auth/auth-entity.model';
 
 @Injectable()

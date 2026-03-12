@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 import { Request } from '@interface-core/request';
 import { AuthRemoteDataSource } from '../source/auth-remote.datasource';
-import { LoginDto, TokensDto, UserDto } from '../dto/auth.dto';
+import { LoginDto, TokensDto, UserDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthRemoteDataSourceImp extends AuthRemoteDataSource {

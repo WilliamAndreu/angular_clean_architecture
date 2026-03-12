@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { LoginDto, TokensDto, UserDto } from '../dto/auth.dto';
+import { LoginDto, TokensDto, UserDto } from '../remote/dto/auth.dto';
 
 export abstract class AuthRemoteDataSource {
   abstract login(username: string, password: string): Observable<LoginDto>;

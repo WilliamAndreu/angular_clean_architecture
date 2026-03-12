@@ -1,10 +1,3 @@
-export interface ProductsDto {
-  products: ProductDto[];
-  total: number;
-  skip: number;
-  limit: number;
-}
-
 export interface ProductDto {
   id: number;
   title: string;

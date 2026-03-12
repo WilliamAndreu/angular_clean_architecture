@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Mapper } from '@interface-core/mapper';
-import { ProductDto, ProductsDto } from '@data/datasource/products/dto/product.dto';
+import { ProductDto } from '@data/datasource/products/remote/dto/product.dto';
+import { ProductsDto } from '@data/datasource/products/remote/dto/products.dto';
 import { ProductEntity, ProductsEntity } from '@models/products/product-entity.model';
 
 @Injectable()
