@@ -25,15 +25,21 @@ export class ProductsListView implements OnInit, OnDestroy {
       if (!el) return;
       this.observer?.disconnect();
       this.observer = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) this.vm.loadMore(); },
+        ([entry]) => {
+          if (entry.isIntersecting) this.vm.loadMore();
+        },
         { threshold: 0.1 },
       );
       this.observer.observe(el);
     });
   }
 
-  ngOnInit(): void { this.vm.init(); }
-  ngOnDestroy(): void { this.observer?.disconnect(); }
+  ngOnInit(): void {
+    this.vm.init();
+  }
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
 
   protected onSearchInput(value: string): void {
     this.vm.updateSearchTerm(value);

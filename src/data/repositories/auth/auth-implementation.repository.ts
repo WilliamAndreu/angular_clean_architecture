@@ -19,29 +19,32 @@ export class AuthImpRepository extends AuthRepository {
   override login(username: string, password: string): Observable<LoginEntity> {
     return this.remote.login(username, password).pipe(
       map((dto) => this.loginMapper.mapFrom(dto)),
-      tap((entity) => this.local.saveTokens(
-        this.tokensDboMapper.mapTo({
-          accessToken: entity.accessToken,
-          refreshToken: entity.refreshToken,
-        }),
-      )),
+      tap((entity) =>
+        this.local.saveTokens(
+          this.tokensDboMapper.mapTo({
+            accessToken: entity.accessToken,
+            refreshToken: entity.refreshToken,
+          }),
+        ),
+      ),
     );
   }
 
   override getAuthUser(): Observable<UserEntity> {
-    return this.remote.getAuthUser().pipe(
-      map((dto) => this.userMapper.mapFrom(dto)),
-    );
+    return this.remote.getAuthUser().pipe(map((dto) => this.userMapper.mapFrom(dto)));
   }
 
   override refreshToken(): Observable<TokensEntity> {
     const token = this.local.getRefreshToken();
     if (!token) return throwError(() => new Error('No refresh token available'));
     return this.remote.refreshToken(token).pipe(
-      map((dto) => this.tokensDboMapper.mapFrom({ accessToken: dto.accessToken, refreshToken: dto.refreshToken })),
-      tap((entity) => this.local.saveTokens(
-        this.tokensDboMapper.mapTo(entity),
-      )),
+      map((dto) =>
+        this.tokensDboMapper.mapFrom({
+          accessToken: dto.accessToken,
+          refreshToken: dto.refreshToken,
+        }),
+      ),
+      tap((entity) => this.local.saveTokens(this.tokensDboMapper.mapTo(entity))),
     );
   }
 }

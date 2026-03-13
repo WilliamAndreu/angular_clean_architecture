@@ -19,9 +19,6 @@ export class LoginView {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const data = new FormData(form);
-    this.vm.login(
-      data.get('username') as string,
-      data.get('password') as string,
-    );
+    this.vm.login(data.get('username') as string, data.get('password') as string);
   }
 }

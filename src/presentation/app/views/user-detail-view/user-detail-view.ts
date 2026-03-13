@@ -16,5 +16,7 @@ import { UserDetailError } from './components/user-detail-error/user-detail-erro
 export class UserDetailView implements OnInit {
   protected readonly vm = inject(UserDetailViewModel);
 
-  ngOnInit(): void { this.vm.init(); }
+  ngOnInit(): void {
+    this.vm.init();
+  }
 }

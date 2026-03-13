@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 import { AppError } from 'src/core/errors/app-error';
 import { ProductsEntity } from 'src/domain/entities/products/product-entity.model';

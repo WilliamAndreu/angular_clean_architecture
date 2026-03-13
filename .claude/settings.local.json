@@ -19,7 +19,9 @@
       "Bash(git remote:*)",
       "Bash(git:*)",
       "Bash(node:*)",
-      "Bash(just:*)"
+      "Bash(just:*)",
+      "Bash(npm run:*)",
+      "Bash(npx prettier:*)"
     ]
   }
 }

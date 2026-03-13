@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { of } from 'rxjs';
-import { firstValueFrom } from 'rxjs';
+import { describe, it, expect, vi } from 'vitest';
+import { of, firstValueFrom } from 'rxjs';
 import { ProductDtoToEntityMapper } from 'src/data/repositories/products/mappers/product-dto-to-entity.mapper';
-import { ProductDto, ProductsDto } from 'src/data/datasource/products/dto/product.dto';
+import { ProductDto } from 'src/data/datasource/products/remote/dto/product.dto';
+import { ProductsDto } from 'src/data/datasource/products/remote/dto/products.dto';
 
 const mockDto: ProductDto = {
   id: 1,

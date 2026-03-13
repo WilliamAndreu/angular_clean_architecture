@@ -6,7 +6,5 @@ export const guestGuard: CanActivateFn = () => {
   const storage = inject(StorageSource);
   const router = inject(Router);
 
-  return storage.get<string>('access_token')
-    ? router.createUrlTree(['/profile'])
-    : true;
+  return storage.get<string>('access_token') ? router.createUrlTree(['/profile']) : true;
 };

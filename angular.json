@@ -11,8 +11,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": { "style": "scss", "standalone": true },
-        "@schematics/angular:directive":  { "standalone": true },
-        "@schematics/angular:pipe":       { "standalone": true }
+        "@schematics/angular:directive": { "standalone": true },
+        "@schematics/angular:pipe": { "standalone": true }
       },
       "root": "",
       "sourceRoot": "src",
@@ -35,9 +35,7 @@
                 "output": "assets/"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -86,6 +84,12 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "buildTarget": "angular-architecture:build:development"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }

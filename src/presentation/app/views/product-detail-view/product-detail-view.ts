@@ -8,13 +8,7 @@ import { ProductDetailError } from './components/product-detail-error/product-de
 
 @Component({
   selector: 'app-product-detail-view',
-  imports: [
-    DetailHeader,
-    ProductGallery,
-    ProductInfo,
-    ProductDetailLoading,
-    ProductDetailError,
-  ],
+  imports: [DetailHeader, ProductGallery, ProductInfo, ProductDetailLoading, ProductDetailError],
   providers: [ProductDetailViewModel],
   templateUrl: './product-detail-view.html',
   styleUrl: './product-detail-view.scss',

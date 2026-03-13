@@ -29,21 +29,23 @@ export class ProductsImpRepository extends ProductsRepository {
         return this.remote.getProducts(limit, skip).pipe(
           tap((dto) => {
             const dbo: ProductsDbo = {
-              products: dto.products.map((p): ProductDbo => ({
-                id: p.id,
-                title: p.title,
-                description: p.description,
-                price: p.price,
-                discountPercentage: p.discountPercentage,
-                rating: p.rating,
-                stock: p.stock,
-                brand: p.brand ?? '',
-                category: p.category,
-                thumbnail: p.thumbnail,
-                images: p.images,
-                availabilityStatus: p.availabilityStatus,
-                tags: p.tags ?? [],
-              })),
+              products: dto.products.map(
+                (p): ProductDbo => ({
+                  id: p.id,
+                  title: p.title,
+                  description: p.description,
+                  price: p.price,
+                  discountPercentage: p.discountPercentage,
+                  rating: p.rating,
+                  stock: p.stock,
+                  brand: p.brand ?? '',
+                  category: p.category,
+                  thumbnail: p.thumbnail,
+                  images: p.images,
+                  availabilityStatus: p.availabilityStatus,
+                  tags: p.tags ?? [],
+                }),
+              ),
               total: dto.total,
               skip: dto.skip,
               limit: dto.limit,
@@ -59,8 +61,6 @@ export class ProductsImpRepository extends ProductsRepository {
   }
 
   override getProduct(id: number): Observable<ProductEntity> {
-    return this.remote.getProduct(id).pipe(
-      map((dto) => this.dtoMapper.mapFrom(dto)),
-    );
+    return this.remote.getProduct(id).pipe(map((dto) => this.dtoMapper.mapFrom(dto)));
   }
 }
