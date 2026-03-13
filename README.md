@@ -241,6 +241,7 @@ npm run domain
 | `just setup` | Set Node version via nvm + install dependencies |
 | `just start` | Dev server at `localhost:4200` |
 | `just test` | Run all tests |
+| `just coverage` | Run tests with coverage report |
 | `just lint` | ESLint |
 | `just format` | Prettier (write) |
 | `npm run build` | Production build |

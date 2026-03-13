@@ -17,6 +17,10 @@ start:
 test:
     npm test
 
+# Ejecuta los tests con coverage
+coverage:
+    npm test -- --coverage
+
 # Ejecuta el linter
 lint:
     npm run lint

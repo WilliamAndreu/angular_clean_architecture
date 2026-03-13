@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ProductDtoToEntityMapper } from 'src/data/repositories/products/mappers/product-dto-to-entity.mapper';
-import { ProductDto, ProductsDto } from 'src/data/datasource/products/dto/product.dto';
+import { ProductDto } from 'src/data/datasource/products/remote/dto/product.dto';
+import { ProductsDto } from 'src/data/datasource/products/remote/dto/products.dto';
 import { ProductEntity } from 'src/domain/entities/products/product-entity.model';
 
 const mockProductDto: ProductDto = {
