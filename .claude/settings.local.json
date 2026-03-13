@@ -21,7 +21,9 @@
       "Bash(node:*)",
       "Bash(just:*)",
       "Bash(npm run:*)",
-      "Bash(npx prettier:*)"
+      "Bash(npx prettier:*)",
+      "Bash(npm info:*)",
+      "Bash(npx ng:*)"
     ]
   }
 }
