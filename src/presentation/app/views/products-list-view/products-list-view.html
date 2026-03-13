@@ -1,16 +1,24 @@
 <div class="flex flex-col min-h-screen">
-  <app-products-header [searchTerm]="vm.viewState.searchTerm()" [resultsCount]="vm.viewState.filteredProducts().length"
-    (searchChange)="onSearchInput($event)" />
+  <app-products-header
+    [searchTerm]="vm.viewState.searchTerm()"
+    [resultsCount]="vm.viewState.filteredProducts().length"
+    (searchChange)="onSearchInput($event)"
+  />
 
-  <main class="flex-1 max-w-[1320px] w-full mx-auto px-10 py-12 max-lg:px-8 max-sm:px-5 max-sm:py-6">
+  <main
+    class="flex-1 max-w-[1320px] w-full mx-auto px-10 py-12 max-lg:px-8 max-sm:px-5 max-sm:py-6"
+  >
     @if (vm.viewState.error(); as error) {
-    <app-products-error [message]="error" class="mb-8" />
+      <app-products-error [message]="error" class="mb-8" />
     }
 
-    <app-products-grid [products]="vm.viewState.filteredProducts()" [searchTerm]="vm.viewState.searchTerm()" />
+    <app-products-grid
+      [products]="vm.viewState.filteredProducts()"
+      [searchTerm]="vm.viewState.searchTerm()"
+    />
 
     @if (vm.viewState.isLoading()) {
-    <app-products-loading />
+      <app-products-loading />
     }
 
     <div #sentinel class="h-1"></div>

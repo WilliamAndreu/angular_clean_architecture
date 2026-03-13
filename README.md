@@ -13,7 +13,7 @@ Built with the latest Angular features: signals, zoneless change detection, and 
 [![RxJS](https://img.shields.io/badge/RxJS-7.8-B7178C?style=for-the-badge&logo=reactivex&logoColor=white)](https://rxjs.dev)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-4.2-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Vitest](https://img.shields.io/badge/Vitest-4.0-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev)
-[![Node.js](https://img.shields.io/badge/Node.js-≥22-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-25.6.1-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 
 </div>
 
@@ -21,10 +21,11 @@ Built with the latest Angular features: signals, zoneless change detection, and 
 
 ## Quick Start
 
+Requires [just](https://github.com/casey/just) and [nvm](https://github.com/nvm-sh/nvm).
+
 ```bash
-npm install       # Install dependencies
-npm start         # Dev server → http://localhost:4200
-npm run build     # Production build
+just setup    # nvm use + npm install (configures husky automatically)
+just start    # Dev server → http://localhost:4200
 ```
 
 ---
@@ -55,6 +56,8 @@ The project enforces a strict **dependency rule**: outer layers depend on inner 
 ```
 src/
 ├── core/                          # Framework-agnostic utilities
+│   ├── assets/                    # Static assets (i18n, icons…)
+│   │   └── i18n/en.json
 │   ├── core-interface/            # UseCase, Mapper, ViewState interfaces
 │   ├── directives/                # ImgFallbackDirective
 │   ├── environments/              # environment.ts / environment.prod.ts
@@ -68,15 +71,21 @@ src/
 ├── data/                          # Infrastructure layer
 │   ├── datasource/
 │   │   ├── products/
-│   │   │   ├── dto/               # ProductDto, ProductsDto
-│   │   │   ├── source/            # Abstract remote + local datasources
-│   │   │   ├── remote/            # ProductsRemoteDataSourceImp (HTTP)
-│   │   │   └── local/             # ProductsLocalDataSourceImp (cache + TTL)
-│   │   └── auth/                  # Same structure for auth
+│   │   │   ├── remote/
+│   │   │   │   ├── dto/           # ProductDto, ProductsDto  (API models)
+│   │   │   │   └── products-remote.datasource.imp.ts
+│   │   │   ├── local/
+│   │   │   │   ├── dbo/           # ProductDbo, ProductsDbo  (local storage models)
+│   │   │   │   └── products-local.datasource.imp.ts
+│   │   │   └── source/            # Abstract datasource contracts
+│   │   └── auth/                  # Same structure (remote/dto, local/dbo)
 │   ├── repositories/
-│   │   └── products/
-│   │       ├── mappers/           # ProductDtoToEntityMapper
-│   │       └── products-implementation.repository.ts
+│   │   ├── products/
+│   │   │   ├── mappers/           # ProductDtoToEntityMapper, ProductDboToEntityMapper
+│   │   │   └── products-implementation.repository.ts
+│   │   └── auth/
+│   │       ├── mappers/           # LoginDtoToEntityMapper, TokensDboToEntityMapper
+│   │       └── auth-implementation.repository.ts
 │   └── di/                        # provideProductsDI(), provideAuthDI()
 │
 ├── domain/                        # Business rules — zero framework dependencies
@@ -106,9 +115,6 @@ src/
 │       ├── components/            # DetailHeader (reusable across views)
 │       └── modals/
 │
-├── assets/
-│   └── i18n/en.json               # Translation strings
-│
 └── tests/                         # Mirrors src/ structure
     ├── core/
     ├── data/
@@ -119,6 +125,20 @@ src/
 ---
 
 ## Key Patterns
+
+### DTO / DBO separation
+
+Each datasource owns its own data model. DTOs and DBOs are never shared between layers:
+
+```
+Remote datasource  →  DTO  →  DtoToEntityMapper  →  Entity
+Local datasource   →  DBO  →  DboToEntityMapper  →  Entity
+```
+
+- **DTO** (`remote/dto/`) — mirrors the API response shape
+- **DBO** (`local/dbo/`) — models what is persisted in local storage (e.g. includes `cachedAt`)
+
+This decouples the API contract from the storage format. A change in the server response only affects the DTO and its mapper, never the cached data structure.
 
 ### MVVM per feature
 
@@ -154,11 +174,11 @@ Each feature registers its own providers via a `provideXxxDI()` function scoped 
 
 ### Cache with TTL
 
-The local datasource wraps cached responses with a timestamp and invalidates them after **1 hour**:
+The local datasource persists a `ProductsDbo` with `cachedAt` embedded and invalidates it after **1 hour**:
 
 ```ts
 // save
-{ data: ProductsDto, cachedAt: Date.now() }
+const dbo: ProductsDbo = { ...products, cachedAt: Date.now() };
 
 // read — returns null if stale
 if (Date.now() - cached.cachedAt > PRODUCTS_CACHE_TTL_MS) return null;
@@ -188,16 +208,16 @@ viewmodel stores err.messageKey
 
 ### i18n
 
-Translation keys live in `src/assets/i18n/en.json`. Templates use `| translate` from `@ngx-translate/core`. ViewModels always store the **key**, never the translated string — the UI layer owns the translation concern.
+Translation keys live in `src/core/assets/i18n/en.json`. Templates use `| translate` from `@ngx-translate/core`. ViewModels always store the **key**, never the translated string — the UI layer owns the translation concern.
 
 ---
 
 ## Testing
 
 ```bash
-npm test                    # Run all tests
-npm test -- --coverage      # With coverage report
-open coverage/index.html    # Open HTML coverage report
+just test                       # Run all tests
+npm test -- --coverage          # With coverage report
+open coverage/index.html        # Open HTML coverage report
 ```
 
 Tests use **Vitest** (no Jest, no Karma). Pure logic — usecases, mappers, utils — runs without Angular TestBed. Components that need DI use `TestBed.configureTestingModule`.
@@ -218,10 +238,20 @@ npm run domain
 
 | Command | Description |
 |---|---|
-| `npm start` | Dev server at `localhost:4200` |
+| `just setup` | Set Node version via nvm + install dependencies |
+| `just start` | Dev server at `localhost:4200` |
+| `just test` | Run all tests |
+| `just lint` | ESLint |
+| `just format` | Prettier (write) |
 | `npm run build` | Production build |
-| `npm test` | Run all tests |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier (write) |
 | `npm run format:check` | Prettier (check only) |
 | `npm run domain` | Generate domain layer scaffold |
+
+---
+
+## Quality
+
+- **ESLint** — enforces `prefer-standalone` and `prefer-inject` as errors, `no-explicit-any` as error
+- **Prettier** — auto-formats on commit via lint-staged
+- **Husky** — pre-commit hook runs lint-staged automatically after `just setup`
+- **lint-staged** — only lints/formats staged files, not the whole project

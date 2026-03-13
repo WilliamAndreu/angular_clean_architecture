@@ -2,9 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { StorageSource } from 'src/core/services/storage/source/storage-source.interface';
 import { ProductsLocalDataSource } from '../source/products-local.datasource';
-import { ProductsDbo } from './dbo/products.dbo';
-
-const PRODUCTS_CACHE_TTL_MS = 60 * 60 * 1000; // 1h
+import { ProductsDbo, PRODUCTS_CACHE_TTL_MS } from './dbo/products.dbo';
 
 @Injectable()
 export class ProductsLocalDataSourceImp extends ProductsLocalDataSource {

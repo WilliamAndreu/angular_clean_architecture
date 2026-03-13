@@ -8,23 +8,18 @@ export const PUBLIC_LAYOUT_ROUTES: Routes = [
     path: '',
     providers: [provideProductsDI()],
     loadComponent: () =>
-      import('@views/products-list-view/products-list-view').then(
-        (m) => m.ProductsListView,
-      ),
+      import('@views/products-list-view/products-list-view').then((m) => m.ProductsListView),
   },
   {
     path: 'products/:id',
     providers: [provideProductsDI()],
     loadComponent: () =>
-      import('@views/product-detail-view/product-detail-view').then(
-        (m) => m.ProductDetailView,
-      ),
+      import('@views/product-detail-view/product-detail-view').then((m) => m.ProductDetailView),
   },
   {
     path: 'login',
     canActivate: [guestGuard],
     providers: [provideAuthDI()],
-    loadComponent: () =>
-      import('@views/login-view/login-view').then((m) => m.LoginView),
+    loadComponent: () => import('@views/login-view/login-view').then((m) => m.LoginView),
   },
 ];

@@ -6,8 +6,6 @@ export const PRIVATE_LAYOUT_ROUTES: Routes = [
     path: '',
     providers: [provideAuthDI()],
     loadComponent: () =>
-      import('@views/user-detail-view/user-detail-view').then(
-        (m) => m.UserDetailView,
-      ),
+      import('@views/user-detail-view/user-detail-view').then((m) => m.UserDetailView),
   },
 ];

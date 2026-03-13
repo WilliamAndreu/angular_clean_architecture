@@ -7,14 +7,19 @@ import { ProductsEntity } from '@models/products/product-entity.model';
 import { AppError } from 'src/core/errors/app-error';
 
 @Injectable()
-export class GetProductsUseCase implements UseCase<{ limit: number; skip: number }, ProductsEntity> {
+export class GetProductsUseCase implements UseCase<
+  { limit: number; skip: number },
+  ProductsEntity
+> {
   private readonly repo = inject(ProductsRepository);
 
   execute(params: { limit: number; skip: number }): Observable<ProductsEntity> {
-    return this.repo.getProducts(params.limit, params.skip).pipe(
-      catchError((err) =>
-        throwError(() => new AppError('errors.products.load_failed', { detail: err.message })),
-      ),
-    );
+    return this.repo
+      .getProducts(params.limit, params.skip)
+      .pipe(
+        catchError((err) =>
+          throwError(() => new AppError('errors.products.load_failed', { detail: err.message })),
+        ),
+      );
   }
 }

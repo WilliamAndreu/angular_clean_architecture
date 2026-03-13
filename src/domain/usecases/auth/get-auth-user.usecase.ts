@@ -11,10 +11,12 @@ export class GetAuthUserUseCase implements UseCase<void, UserEntity> {
   private readonly repo = inject(AuthRepository);
 
   execute(): Observable<UserEntity> {
-    return this.repo.getAuthUser().pipe(
-      catchError((err) =>
-        throwError(() => new AppError('errors.unknown', { detail: err.message })),
-      ),
-    );
+    return this.repo
+      .getAuthUser()
+      .pipe(
+        catchError((err) =>
+          throwError(() => new AppError('errors.unknown', { detail: err.message })),
+        ),
+      );
   }
 }

@@ -1,5 +1,6 @@
-<div class="w-full max-w-[420px] bg-white/[0.02] border border-white/[0.08]
-            rounded-2xl p-8 flex flex-col items-center gap-6">
+<div
+  class="w-full max-w-[420px] bg-white/[0.02] border border-white/[0.08] rounded-2xl p-8 flex flex-col items-center gap-6"
+>
   <img
     class="w-24 h-24 rounded-full object-cover border border-white/[0.08]"
     [src]="user.image"
@@ -27,9 +28,7 @@
   <button
     type="button"
     (click)="logout.emit()"
-    class="w-full border border-red-500/[0.18] text-red-400/70 text-[13px] font-medium
-           py-2.5 rounded-xl transition-all duration-200
-           hover:bg-red-500/[0.06] hover:text-red-400/90"
+    class="w-full border border-red-500/[0.18] text-red-400/70 text-[13px] font-medium py-2.5 rounded-xl transition-all duration-200 hover:bg-red-500/[0.06] hover:text-red-400/90"
   >
     {{ 'profile.sign_out' | translate }}
   </button>

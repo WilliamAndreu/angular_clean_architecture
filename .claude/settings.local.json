@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(ng version:*)",
+      "Bash(ng new:*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npx husky:*)",
+      "Bash(git init:*)",
+      "Bash(ng build:*)",
+      "WebFetch(domain:stackoverflow.com)",
+      "WebSearch",
+      "WebFetch(domain:www.pacyfist.dev)",
+      "WebFetch(domain:angular.dev)",
+      "WebFetch(domain:dummyjson.com)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(git remote:*)",
+      "Bash(git:*)",
+      "Bash(node:*)",
+      "Bash(just:*)",
+      "Bash(npm run:*)",
+      "Bash(npx prettier:*)",
+      "Bash(npm info:*)",
+      "Bash(npx ng:*)"
+    ]
+  }
+}

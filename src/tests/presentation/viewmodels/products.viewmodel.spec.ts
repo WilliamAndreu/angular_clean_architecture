@@ -29,7 +29,9 @@ const mockEntity: ProductsEntity = {
 describe('ProductsViewModel (logic)', () => {
   it('sets error messageKey on failure', () => {
     const err = new AppError('errors.products.load_failed');
-    const usecase = { execute: vi.fn((_p: { limit: number; skip: number }) => throwError(() => err)) };
+    const usecase = {
+      execute: vi.fn((_p: { limit: number; skip: number }) => throwError(() => err)),
+    };
 
     let errorKey: string | null = null;
     usecase.execute({ limit: 20, skip: 0 }).subscribe({

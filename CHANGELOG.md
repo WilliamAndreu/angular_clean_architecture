@@ -9,6 +9,43 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.3.0] — 2026-03-13
+
+### Added
+- **`justfile`** — centralizes project setup with `just setup` (nvm use + npm install), `just start`, `just test`, `just lint`, `just format`
+- **`.nvmrc`** — pins Node.js version to `25.6.1`
+
+### Changed
+- **ESLint** — updated `.eslintrc.json`: `no-explicit-any` promoted to `error`, added `varsIgnorePattern: "^_"` to `no-unused-vars`, expanded `no-console` allow list to include `info` and `log`, added explicit `prettier/prettier: error` rule, enforced `prefer-standalone: error` and `prefer-inject: error`, added `plugin:prettier/recommended` to HTML overrides with `click-events-have-key-events` and `interactive-supports-focus` disabled
+- **lint-staged** — `prettier --check` replaced with `prettier --write` for `*.{scss,css,json}` (auto-fix on commit)
+- **`assets/`** relocated from `src/assets/` to `src/core/assets/` to keep all framework-agnostic resources inside `core`
+- **README** — updated Quick Start to use `just`, added DTO/DBO pattern section, updated folder structure, commands table and quality section
+
+---
+
+## [2.2.0] — 2026-03-12
+
+### Added
+- **DBO layer** — introduced Database Objects (`ProductDbo`, `ProductsDbo`, `TokensDbo`) as dedicated local storage models, decoupling the remote DTO structure from the local cache format
+- **`product-dbo-to-entity.mapper.ts`** — maps `ProductDbo` / `ProductsDbo` to domain entities (`ProductEntity` / `ProductsEntity`)
+- **`auth-dbo-to-entity.mapper.ts`** — maps `TokensDbo` to `TokensEntity` (`TokensDboToEntityMapper`)
+- **`ProductDboToEntityMapper` + `TokensDboToEntityMapper`** registered in `provideProductsDI()` and `provideAuthDI()`
+
+### Changed
+- **DTO files split** — `product.dto.ts` split into `product.dto.ts` (`ProductDto`) and `products.dto.ts` (`ProductsDto`), consistent with DBO naming convention
+- **DTOs relocated** inside `remote/dto/` — `products/remote/dto/`, `auth/remote/dto/`; DTOs are now exclusively owned by the remote datasource
+- **DBOs located** inside `local/dbo/` — `products/local/dbo/`, `auth/local/dbo/`; DBOs are exclusively owned by the local datasource
+- **`ProductsLocalDataSource`** contract updated: `getProducts` / `saveProducts` now use `ProductsDbo` instead of `ProductsDto`
+- **`AuthLocalDataSource`** contract updated: `saveTokens` now accepts `TokensDbo` instead of `TokensEntity`
+- **`ProductsImpRepository`** uses `ProductDboToEntityMapper` for cache reads; builds `ProductsDbo` (with `cachedAt`) before writing to local storage
+- **`AuthImpRepository`** uses `TokensDboToEntityMapper` to convert entities to DBO before persisting tokens
+- **`cachedAt`** moved from the `CachedProducts` wrapper into `ProductsDbo` directly
+
+### Removed
+- `src/data/datasource/products/local/models/cached-products.model.ts` — replaced by `ProductsDbo.cachedAt`
+
+---
+
 ## [2.1.0] — 2026-03-10
 
 ### Added

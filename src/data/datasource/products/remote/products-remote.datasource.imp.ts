@@ -20,9 +20,6 @@ export class ProductsRemoteDataSourceImp extends ProductsRemoteDataSource {
   }
 
   override getProduct(id: number): Observable<ProductDto> {
-    return this.request.doRequest<ProductDto>(
-      'GET',
-      `${environment.apiBaseUrl}/products/${id}`,
-    );
+    return this.request.doRequest<ProductDto>('GET', `${environment.apiBaseUrl}/products/${id}`);
   }
 }
