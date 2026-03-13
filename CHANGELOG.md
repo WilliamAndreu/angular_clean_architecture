@@ -12,14 +12,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [2.3.0] — 2026-03-13
 
 ### Added
-- **`justfile`** — centralizes project setup with `just setup` (nvm use + npm install), `just start`, `just test`, `just lint`, `just format`
+- **`justfile`** — centralizes project setup with `just setup` (nvm use + npm install), `just start`, `just test`, `just coverage`, `just lint`, `just format`
 - **`.nvmrc`** — pins Node.js version to `25.6.1`
+- **`.vscode/settings.json`** — workspace settings: Prettier as default formatter, `formatOnSave`, `autoSave` on focus change
 
 ### Changed
 - **ESLint** — updated `.eslintrc.json`: `no-explicit-any` promoted to `error`, added `varsIgnorePattern: "^_"` to `no-unused-vars`, expanded `no-console` allow list to include `info` and `log`, added explicit `prettier/prettier: error` rule, enforced `prefer-standalone: error` and `prefer-inject: error`, added `plugin:prettier/recommended` to HTML overrides with `click-events-have-key-events` and `interactive-supports-focus` disabled
-- **lint-staged** — `prettier --check` replaced with `prettier --write` for `*.{scss,css,json}` (auto-fix on commit)
+- **lint-staged** — `prettier --check` replaced with `prettier --write` for `*.{scss,css,json}` (auto-fix on commit), uses `./node_modules/.bin/eslint` to avoid picking up globally installed ESLint versions
 - **`assets/`** relocated from `src/assets/` to `src/core/assets/` to keep all framework-agnostic resources inside `core`
 - **README** — updated Quick Start to use `just`, added DTO/DBO pattern section, updated folder structure, commands table and quality section
+
+### Fixed
+- **lint target** added to `angular.json` — `ng lint` was missing the `@angular-eslint/builder:lint` target
+- **Broken imports** in test files updated to new DTO split paths (`remote/dto/product.dto`, `remote/dto/products.dto`) and DBO paths (`local/dbo/products.dbo`)
+- **`PRODUCTS_CACHE_TTL_MS`** exported from `products.dbo.ts` and removed duplicate declaration from `products-local.datasource.imp.ts`
+- **Prettier errors** across presentation, data and domain layers fixed
 
 ---
 
