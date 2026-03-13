@@ -20,18 +20,29 @@
           "error",
           { "type": "element", "prefix": "app", "style": "kebab-case" }
         ],
-        "@typescript-eslint/no-explicit-any": "warn",
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-        "no-console": ["warn", { "allow": ["warn", "error"] }]
+        "prettier/prettier": ["error"],
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+        ],
+        "no-console": ["warn", { "allow": ["warn", "error", "info", "log"] }],
+        "@angular-eslint/prefer-standalone": "error",
+        "@angular-eslint/prefer-inject": "error"
       }
     },
     {
       "files": ["*.html"],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
-        "plugin:@angular-eslint/template/accessibility"
+        "plugin:@angular-eslint/template/accessibility",
+        "plugin:prettier/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "prettier/prettier": ["error"],
+        "@angular-eslint/template/click-events-have-key-events": "off",
+        "@angular-eslint/template/interactive-supports-focus": "off"
+      }
     }
   ]
 }
