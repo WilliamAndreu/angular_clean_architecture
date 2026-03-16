@@ -5,8 +5,12 @@
     "not_found": "Resource not found",
     "server": "Server error. Please try again",
     "unknown": "An unexpected error occurred",
-    "products": { "load_failed": "Could not load products" },
-    "auth": { "login_failed": "Invalid credentials" }
+    "products": { "load_failed": "Could not load products", "not_found": "Product not found" },
+    "auth": {
+      "login_failed": "Invalid credentials",
+      "invalid_credentials": "Invalid username or password",
+      "session_expired": "Session expired. Please log in again"
+    }
   },
   "products": {
     "header": { "store": "Store", "title": "Products", "search": "Search products" },

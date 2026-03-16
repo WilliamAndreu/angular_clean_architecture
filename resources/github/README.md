@@ -25,7 +25,7 @@ Requires [just](https://github.com/casey/just) and [nvm](https://github.com/nvm-
 
 ```bash
 just setup    # nvm use + npm install (configures husky automatically)
-just start    # Dev server → http://localhost:4200
+npm start     # Dev server → http://localhost:4200
 ```
 
 ---
@@ -90,6 +90,7 @@ src/
 │
 ├── domain/                        # Business rules — zero framework dependencies
 │   ├── entities/                  # ProductEntity, UserEntity, LoginEntity…
+│   ├── errors/                    # InvalidCredentialsError, SessionExpiredError…
 │   ├── repositories/              # Abstract repository contracts
 │   └── usecases/                  # GetProductsUseCase, LoginUseCase…
 │
@@ -186,25 +187,36 @@ if (Date.now() - cached.cachedAt > PRODUCTS_CACHE_TTL_MS) return null;
 
 ### Typed error handling
 
-Errors are typed and translated across three layers:
+Errors flow through three layers with increasing specificity:
 
 ```
 HTTP response
-    ↓  interceptor maps status code
-AppError subclass
-    ↓  usecase wraps with business context via catchError
+    ↓  interceptor → core AppError subclass
+repository → domain-specific error via catchError
+    ↓  usecase passes AppErrors through, wraps unexpected errors
 viewmodel stores err.messageKey
     ↓  template renders
 {{ error | translate }}
 ```
 
+**Core errors** (`src/core/errors/app-error.ts`):
+
 | Class | HTTP Status | i18n Key |
 |---|:---:|---|
 | `NetworkError` | `0` | `errors.network` |
+| `BadRequestError` | `400` | — |
 | `UnauthorizedError` | `401` | `errors.unauthorized` |
 | `NotFoundError` | `404` | `errors.not_found` |
 | `ServerError` | `5xx` | `errors.server` |
 | `AppError` | default | `errors.unknown` |
+
+**Domain errors** (`src/domain/errors/`):
+
+| Class | Maps from | i18n Key |
+|---|---|---|
+| `InvalidCredentialsError` | `UnauthorizedError` \| `BadRequestError` | `errors.auth.invalid_credentials` |
+| `SessionExpiredError` | `UnauthorizedError` | `errors.auth.session_expired` |
+| `ProductNotFoundError` | `NotFoundError` | `errors.products.not_found` |
 
 ### i18n
 
@@ -239,10 +251,11 @@ npm run domain
 | Command | Description |
 |---|---|
 | `just setup` | Set Node version via nvm + install dependencies |
-| `just start` | Dev server at `localhost:4200` |
+| `npm start` | Dev server at `localhost:4200` |
 | `just test` | Run all tests |
 | `just coverage` | Run tests with coverage report |
 | `just lint` | ESLint |
+| `just lint-fix` | ESLint (auto-fix) |
 | `just format` | Prettier (write) |
 | `npm run build` | Production build |
 | `npm run format:check` | Prettier (check only) |

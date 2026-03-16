@@ -11,12 +11,11 @@ export class GetProductUseCase implements UseCase<number, ProductEntity> {
   private readonly repo = inject(ProductsRepository);
 
   execute(id: number): Observable<ProductEntity> {
-    return this.repo
-      .getProduct(id)
-      .pipe(
-        catchError((err) =>
-          throwError(() => new AppError('errors.products.load_failed', { detail: err.message })),
-        ),
-      );
+    return this.repo.getProduct(id).pipe(
+      catchError((err) => {
+        if (err instanceof AppError) return throwError(() => err);
+        return throwError(() => new AppError('errors.products.load_failed'));
+      }),
+    );
   }
 }

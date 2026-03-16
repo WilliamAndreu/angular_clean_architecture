@@ -1,4 +1,4 @@
-<form (submit)="submitted.emit($event)" class="flex flex-col gap-4">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
   @if (error) {
     <div
       class="flex items-start gap-2.5 bg-red-500/[0.06] border border-red-500/[0.18] text-red-400/80 text-[12px] px-3.5 py-2.5 rounded-xl"
@@ -14,7 +14,7 @@
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
-      <span>{{ error }}</span>
+      <span>{{ error | translate }}</span>
     </div>
   }
 
@@ -22,11 +22,10 @@
     <label class="text-[12px] text-white/40 font-medium" for="username">Username</label>
     <input
       id="username"
-      name="username"
+      formControlName="username"
       type="text"
       autocomplete="username"
       placeholder="emilys"
-      required
       class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-[13px] text-white/80 placeholder:text-white/20 outline-none transition-all duration-200 focus:bg-white/[0.05] focus:border-white/[0.18] focus:ring-1 focus:ring-white/[0.12]"
     />
   </div>
@@ -35,18 +34,17 @@
     <label class="text-[12px] text-white/40 font-medium" for="password">Password</label>
     <input
       id="password"
-      name="password"
+      formControlName="password"
       type="password"
       autocomplete="current-password"
       placeholder="••••••••"
-      required
       class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-[13px] text-white/80 placeholder:text-white/20 outline-none transition-all duration-200 focus:bg-white/[0.05] focus:border-white/[0.18] focus:ring-1 focus:ring-white/[0.12]"
     />
   </div>
 
   <button
     type="submit"
-    [disabled]="isLoading"
+    [disabled]="isLoading || form.invalid"
     class="w-full bg-white text-[#0b0b0b] font-semibold text-[13px] py-3 rounded-xl mt-1 transition-all duration-200 hover:bg-white/95 disabled:opacity-40 disabled:cursor-not-allowed"
   >
     @if (isLoading) {

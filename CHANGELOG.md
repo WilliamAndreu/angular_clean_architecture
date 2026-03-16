@@ -9,6 +9,29 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.3.1] — 2026-03-16
+
+### Added
+- **Domain errors** — `InvalidCredentialsError`, `SessionExpiredError` (`src/domain/errors/auth/`) and `ProductNotFoundError` (`src/domain/errors/products/`) as business-specific `AppError` subclasses
+- **`BadRequestError`** added to `src/core/errors/app-error.ts` — covers HTTP 400 responses (e.g. DummyJSON returns 400 for invalid login credentials)
+- **HTTP 400 → `BadRequestError`** mapping in `publicInterceptor`
+- **`just lint-fix`** command in justfile — runs `ng lint --fix`
+- **i18n keys** — `errors.auth.invalid_credentials`, `errors.auth.session_expired`, `errors.products.not_found`
+
+### Changed
+- **Login form** — migrated from template-driven forms to Reactive Forms (`FormBuilder`, `ReactiveFormsModule`, `Validators`); submit now emits typed `LoginFormValue` instead of raw `SubmitEvent`
+- **Repositories `catchError`** — replaced broken `instanceof HttpErrorResponse` checks (dead code after interceptor conversion) with `instanceof AppError` subclass checks; repositories now correctly remap core errors to domain-specific errors
+- **UseCases `catchError`** — now pass `AppError` instances through unchanged; only wrap unexpected non-`AppError` errors with a generic fallback key
+- **`just start` removed** from justfile — use `npm start` directly
+- **README** — updated Quick Start, commands table (`npm start`, `just lint-fix`), folder structure (`domain/errors/`), and error handling section (two-level error table: core + domain)
+
+### Fixed
+- **`publicInterceptor`** — `defaultLanguage` option in ngx-translate v17 did not activate the language; replaced with `lang: 'en'` + `fallbackLang: 'en'`
+- **i18n assets path** — double-nested `assets/assets/i18n/` corrected to `assets/i18n/`
+- **Login error message** — invalid credentials now correctly shows `errors.auth.invalid_credentials` instead of `errors.unknown`
+
+---
+
 ## [2.3.0] — 2026-03-13
 
 ### Added

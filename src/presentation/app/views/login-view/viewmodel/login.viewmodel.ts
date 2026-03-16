@@ -23,7 +23,7 @@ export class LoginViewModel {
         this.router.navigate(['/profile']);
       },
       error: (err: unknown) => {
-        this.state.error.set(err instanceof AppError ? err.messageKey : 'errors.auth.login_failed');
+        this.state.error.set(err instanceof AppError ? err.messageKey : 'errors.unknown');
         this.state.isLoading.set(false);
       },
     });
