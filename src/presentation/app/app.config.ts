@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([publicInterceptor, authInterceptor])),
     provideRouter(APP_ROUTES, withComponentInputBinding()),
     { provide: StorageSource, useClass: LocalStorageService },
-    provideTranslateService({ defaultLanguage: 'en' }),
-    provideTranslateHttpLoader({ prefix: './assets/i18n/', suffix: '.json' }),
+    provideTranslateService({ lang: 'en', fallbackLang: 'en' }),
+    provideTranslateHttpLoader(),
   ],
 };

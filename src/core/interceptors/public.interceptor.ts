@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import {
   AppError,
+  BadRequestError,
   NetworkError,
   NotFoundError,
   ServerError,
@@ -18,6 +19,7 @@ export const publicInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 function mapHttpError(error: HttpErrorResponse): AppError {
+  if (error.status === 400) return new BadRequestError('errors.unknown');
   if (error.status === 401) return new UnauthorizedError('errors.unauthorized');
   if (error.status === 404) return new NotFoundError('errors.not_found');
   if (error.status === 0) return new NetworkError('errors.network');

@@ -11,12 +11,11 @@ export class LoginUseCase implements UseCase<{ username: string; password: strin
   private readonly repo = inject(AuthRepository);
 
   execute(params: { username: string; password: string }): Observable<LoginEntity> {
-    return this.repo
-      .login(params.username, params.password)
-      .pipe(
-        catchError((err) =>
-          throwError(() => new AppError('errors.auth.login_failed', { detail: err.message })),
-        ),
-      );
+    return this.repo.login(params.username, params.password).pipe(
+      catchError((err) => {
+        if (err instanceof AppError) return throwError(() => err);
+        return throwError(() => new AppError('errors.auth.login_failed'));
+      }),
+    );
   }
 }

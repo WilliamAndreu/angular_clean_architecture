@@ -9,10 +9,6 @@ setup:
     nvm install
     npm install
 
-# Arranca el servidor de desarrollo
-start:
-    npm start
-
 # Ejecuta los tests
 test:
     npm test
@@ -24,6 +20,10 @@ coverage:
 # Ejecuta el linter
 lint:
     npm run lint
+
+# Ejecuta el linter y corrige errores automáticamente
+lint-fix:
+    npm run lint -- --fix
 
 # Formatea el código
 format:

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { LoginViewModel } from './viewmodel/login.viewmodel';
 import { LoginHeader } from './components/login-header/login-header';
-import { LoginForm } from './components/login-form/login-form';
+import { LoginForm, LoginFormValue } from './components/login-form/login-form';
 import { LoginFooter } from './components/login-footer/login-footer';
 
 @Component({
@@ -15,10 +15,7 @@ import { LoginFooter } from './components/login-footer/login-footer';
 export class LoginView {
   protected readonly vm = inject(LoginViewModel);
 
-  protected onSubmit(event: SubmitEvent): void {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    const data = new FormData(form);
-    this.vm.login(data.get('username') as string, data.get('password') as string);
+  protected onSubmit({ username, password }: LoginFormValue): void {
+    this.vm.login(username, password);
   }
 }
