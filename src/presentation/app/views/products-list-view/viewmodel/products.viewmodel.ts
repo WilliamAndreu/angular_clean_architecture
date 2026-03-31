@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ProductsState } from './products.state';
 import { GetProductsUseCase } from '@usecases/products/get-products.usecase';
 import { ProductsEntity } from '@models/products/product-entity.model';
-import { ViewState } from '@interface-core/view-state';
+import { ViewState } from '@interfaces/view-state';
 import { AppError } from 'src/core/errors/app-error';
 
 @Injectable()

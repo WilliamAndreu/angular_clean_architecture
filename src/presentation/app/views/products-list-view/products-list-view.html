@@ -8,19 +8,21 @@
   <main
     class="flex-1 max-w-[1320px] w-full mx-auto px-10 py-12 max-lg:px-8 max-sm:px-5 max-sm:py-6"
   >
-    @if (vm.viewState.error(); as error) {
-      <app-products-error [message]="error" class="mb-8" />
-    }
-
-    <app-products-grid
-      [products]="vm.viewState.filteredProducts()"
-      [searchTerm]="vm.viewState.searchTerm()"
-    />
-
-    @if (vm.viewState.isLoading()) {
+    @if (vm.viewState.isLoading() && vm.viewState.products().length === 0) {
       <app-products-loading />
-    }
+    } @else if (vm.viewState.error(); as error) {
+      <app-products-error [message]="error" />
+    } @else {
+      <app-products-grid
+        [products]="vm.viewState.filteredProducts()"
+        [searchTerm]="vm.viewState.searchTerm()"
+      />
 
-    <div #sentinel class="h-1"></div>
+      @if (vm.viewState.isLoading()) {
+        <app-products-loading />
+      }
+
+      <div #sentinel class="h-1"></div>
+    }
   </main>
 </div>

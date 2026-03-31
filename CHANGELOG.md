@@ -9,6 +9,27 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.3.2] — 2026-03-31
+
+### Added
+- **`LoginCredentialsEntity`** — new domain entity (`src/domain/entities/auth/`) representing login form input (`username`, `password`); decouples the use case contract from raw primitives
+- **`LoginRequestDto`** — new DTO (`src/data/datasource/auth/remote/dto/auth.dto.ts`) representing the API request body; includes `expiresInMins` as an API-level concern not exposed to the domain
+- **`LoginCredentialsDtoMapper`** — new mapper (`src/data/repositories/auth/mappers/`) converts `LoginCredentialsEntity` → `LoginRequestDto`; `expiresInMins: 60` is set here as a data-layer constant
+
+### Changed
+- **`LoginUseCase`** — signature updated from `UseCase<{ username: string; password: string }, LoginEntity>` to `UseCase<LoginCredentialsEntity, LoginEntity>`
+- **`AuthRepository`** (abstract) — `login(username, password)` replaced by `login(credentials: LoginCredentialsEntity)`
+- **`AuthRemoteDataSource`** (abstract) — `login(username, password)` replaced by `login(dto: LoginRequestDto)`
+- **`AuthRemoteDataSourceImp`** — receives `LoginRequestDto` and passes it directly as HTTP body; no longer builds the body inline
+- **`AuthImpRepository`** — applies `LoginCredentialsDtoMapper.mapTo()` before calling the remote datasource; `LoginCredentialsDtoMapper` injected via `inject()`
+- **`provideAuthDI()`** — registers `LoginCredentialsDtoMapper`
+- **`core-interface/` renamed to `interfaces/`** — folder moved from `src/core/core-interface/` to `src/core/interfaces/`; path alias updated in `tsconfig.json` from `@interface-core/*` to `@interfaces/*`; all 21 affected files (`.ts` + `.mustache`) updated
+
+### Fixed
+- **Products list initial load** — `app-products-grid` was always rendered regardless of state, causing the `@empty` block ("No results for """) to appear simultaneously with the loading spinner on first load and alongside the error banner on failure; replaced with mutually exclusive `@if / @else if / @else` states: initial loading → error → content (grid + optional load-more spinner)
+
+---
+
 ## [2.3.1] — 2026-03-16
 
 ### Added

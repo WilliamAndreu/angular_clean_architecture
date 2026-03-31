@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, throwError } from 'rxjs';
-import { UseCase } from '@interface-core/use-case';
+import { UseCase } from '@interfaces/use-case';
 import { AuthRepository } from '@repositories/auth/auth.repository';
 import { UserEntity } from '@models/auth/auth-entity.model';
 import { AppError } from 'src/core/errors/app-error';

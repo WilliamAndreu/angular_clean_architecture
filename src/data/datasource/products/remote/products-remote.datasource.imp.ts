@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
-import { Request } from '@interface-core/request';
+import { Request } from '@interfaces/request';
 import { ProductsRemoteDataSource } from '../source/products-remote.datasource';
 import { ProductDto } from './dto/product.dto';
 import { ProductsDto } from './dto/products.dto';

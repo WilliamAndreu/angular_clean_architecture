@@ -1,3 +1,8 @@
+export interface LoginCredentialsEntity {
+  username: string;
+  password: string;
+}
+
 export interface LoginEntity {
   accessToken: string;
   refreshToken: string;

@@ -1,20 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
-import { Request } from '@interface-core/request';
+import { Request } from '@interfaces/request';
 import { AuthRemoteDataSource } from '../source/auth-remote.datasource';
-import { LoginDto, TokensDto, UserDto } from './dto/auth.dto';
+import { LoginDto, LoginRequestDto, TokensDto, UserDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
   private readonly request = inject(Request);
 
-  override login(username: string, password: string): Observable<LoginDto> {
-    return this.request.doRequest<LoginDto>('POST', `${environment.apiBaseUrl}/auth/login`, {
-      username,
-      password,
-      expiresInMins: 60,
-    });
+  override login(dto: LoginRequestDto): Observable<LoginDto> {
+    return this.request.doRequest<LoginDto>('POST', `${environment.apiBaseUrl}/auth/login`, dto);
   }
 
   override getAuthUser(): Observable<UserDto> {

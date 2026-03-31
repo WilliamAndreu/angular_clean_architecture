@@ -23,7 +23,9 @@
       "Bash(npm run:*)",
       "Bash(npx prettier:*)",
       "Bash(npm info:*)",
-      "Bash(npx ng:*)"
+      "Bash(npx ng:*)",
+      "Bash(find src:*)",
+      "Bash(find:*)"
     ]
   }
 }
