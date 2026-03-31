@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UserDetailState } from './user-detail.state';
 import { GetAuthUserUseCase } from '@usecases/auth/get-auth-user.usecase';
 import { AuthLocalDataSource } from '@data/datasource/auth/source/auth-local.datasource';
-import { ViewState } from '@interface-core/view-state';
+import { ViewState } from '@interfaces/view-state';
 import { AppError } from 'src/core/errors/app-error';
 
 @Injectable()

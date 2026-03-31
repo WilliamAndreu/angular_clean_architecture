@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginState } from './login.state';
 import { LoginUseCase } from '@usecases/auth/login.usecase';
-import { ViewState } from '@interface-core/view-state';
+import { ViewState } from '@interfaces/view-state';
 import { AppError } from 'src/core/errors/app-error';
 
 @Injectable()

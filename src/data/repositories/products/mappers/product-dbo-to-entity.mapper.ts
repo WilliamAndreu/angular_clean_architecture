@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Mapper } from '@interface-core/mapper';
+import { Mapper } from '@interfaces/mapper';
 import { ProductDbo } from '@data/datasource/products/local/dbo/product.dbo';
 import { ProductsDbo } from '@data/datasource/products/local/dbo/products.dbo';
 import { ProductEntity, ProductsEntity } from '@models/products/product-entity.model';

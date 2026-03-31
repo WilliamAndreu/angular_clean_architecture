@@ -10,6 +10,7 @@ import {
   UserDtoToEntityMapper,
 } from '@data/repositories/auth/mappers/auth-dto-to-entity.mapper';
 import { TokensDboToEntityMapper } from '@data/repositories/auth/mappers/auth-dbo-to-entity.mapper';
+import { LoginCredentialsDtoMapper } from '@data/repositories/auth/mappers/login-credentials-dto.mapper';
 import { LoginUseCase } from '@usecases/auth/login.usecase';
 import { GetAuthUserUseCase } from '@usecases/auth/get-auth-user.usecase';
 import { RefreshTokenUseCase } from '@usecases/auth/refresh-token.usecase';
@@ -22,6 +23,7 @@ export function provideAuthDI(): EnvironmentProviders {
     LoginDtoToEntityMapper,
     UserDtoToEntityMapper,
     TokensDboToEntityMapper,
+    LoginCredentialsDtoMapper,
     { provide: AuthRepository, useClass: AuthImpRepository },
     { provide: AuthRemoteDataSource, useClass: AuthRemoteDataSourceImp },
     { provide: AuthLocalDataSource, useClass: AuthLocalDataSourceImp },

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ProductDetailState } from './product-detail.state';
 import { GetProductUseCase } from '@usecases/products/get-product.usecase';
-import { ViewState } from '@interface-core/view-state';
+import { ViewState } from '@interfaces/view-state';
 import { AppError } from 'src/core/errors/app-error';
 
 @Injectable()

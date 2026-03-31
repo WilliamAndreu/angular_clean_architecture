@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Mapper } from '@interface-core/mapper';
+import { Mapper } from '@interfaces/mapper';
 import { TokensDbo } from '@data/datasource/auth/local/dbo/auth.dbo';
 import { TokensEntity } from '@models/auth/auth-entity.model';
 

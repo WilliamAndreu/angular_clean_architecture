@@ -16,51 +16,21 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@directives/*": [
-        "src/core/directives/*"
-      ],
-      "@guards/*": [
-        "src/core/guards/*"
-      ],
-      "@interceptors/*": [
-        "src/core/interceptors/*"
-      ],
-      "@interface-core/*": [
-        "src/core/core-interface/*"
-      ],
-      "@pipes/*": [
-        "src/core/pipes/*"
-      ],
-      "@utils/*": [
-        "src/core/utils/*"
-      ],
-      "@data/*": [
-        "src/data/*"
-      ],
-      "@di/*": [
-        "src/data/di/*"
-      ],
-      "@models/*": [
-        "src/domain/entities/*"
-      ],
-      "@repositories/*": [
-        "src/domain/repositories/*"
-      ],
-      "@usecases/*": [
-        "src/domain/usecases/*"
-      ],
-      "@layouts/*": [
-        "src/presentation/app/layouts/*"
-      ],
-      "@views/*": [
-        "src/presentation/app/views/*"
-      ],
-      "@shared/*": [
-        "src/presentation/shared/*"
-      ],
-      "@environments/*": [
-        "src/core/environments/*"
-      ]
+      "@directives/*": ["src/core/directives/*"],
+      "@guards/*": ["src/core/guards/*"],
+      "@interceptors/*": ["src/core/interceptors/*"],
+      "@interfaces/*": ["src/core/interfaces/*"],
+      "@pipes/*": ["src/core/pipes/*"],
+      "@utils/*": ["src/core/utils/*"],
+      "@data/*": ["src/data/*"],
+      "@di/*": ["src/data/di/*"],
+      "@models/*": ["src/domain/entities/*"],
+      "@repositories/*": ["src/domain/repositories/*"],
+      "@usecases/*": ["src/domain/usecases/*"],
+      "@layouts/*": ["src/presentation/app/layouts/*"],
+      "@views/*": ["src/presentation/app/views/*"],
+      "@shared/*": ["src/presentation/shared/*"],
+      "@environments/*": ["src/core/environments/*"]
     }
   },
   "angularCompilerOptions": {

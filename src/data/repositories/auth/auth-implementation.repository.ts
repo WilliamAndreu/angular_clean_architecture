@@ -6,7 +6,13 @@ import { AuthRemoteDataSource } from '@data/datasource/auth/source/auth-remote.d
 import { AuthLocalDataSource } from '@data/datasource/auth/source/auth-local.datasource';
 import { LoginDtoToEntityMapper, UserDtoToEntityMapper } from './mappers/auth-dto-to-entity.mapper';
 import { TokensDboToEntityMapper } from './mappers/auth-dbo-to-entity.mapper';
-import { LoginEntity, TokensEntity, UserEntity } from '@models/auth/auth-entity.model';
+import { LoginCredentialsDtoMapper } from './mappers/login-credentials-dto.mapper';
+import {
+  LoginCredentialsEntity,
+  LoginEntity,
+  TokensEntity,
+  UserEntity,
+} from '@models/auth/auth-entity.model';
 import {
   AppError,
   BadRequestError,
@@ -22,9 +28,10 @@ export class AuthImpRepository extends AuthRepository {
   private readonly loginMapper = inject(LoginDtoToEntityMapper);
   private readonly userMapper = inject(UserDtoToEntityMapper);
   private readonly tokensDboMapper = inject(TokensDboToEntityMapper);
+  private readonly credentialsMapper = inject(LoginCredentialsDtoMapper);
 
-  override login(username: string, password: string): Observable<LoginEntity> {
-    return this.remote.login(username, password).pipe(
+  override login(credentials: LoginCredentialsEntity): Observable<LoginEntity> {
+    return this.remote.login(this.credentialsMapper.mapTo(credentials)).pipe(
       map((dto) => this.loginMapper.mapFrom(dto)),
       tap((entity) =>
         this.local.saveTokens(
