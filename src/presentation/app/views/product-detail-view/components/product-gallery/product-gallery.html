@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-3">
-  <div class="aspect-square bg-white/[0.02] border border-white/[0.06] rounded-2xl overflow-hidden">
+  <div class="aspect-square bg-white/2 border border-white/6 rounded-2xl overflow-hidden">
     <img
       appImgFallback
       class="w-full h-full object-contain p-8"
@@ -13,11 +13,11 @@
       @for (img of product.images; track $index) {
         <button
           type="button"
-          class="shrink-0 w-16 h-16 rounded-xl overflow-hidden border transition-all duration-150 bg-white/[0.03]"
+          class="shrink-0 w-16 h-16 rounded-xl overflow-hidden border transition-all duration-150 bg-white/3"
           [class]="
             activeImage === $index
               ? 'border-white/30'
-              : 'border-white/[0.06] opacity-60 hover:opacity-90'
+              : 'border-white/6 opacity-60 hover:opacity-90'
           "
           (click)="activeImageChange.emit($index)"
         >

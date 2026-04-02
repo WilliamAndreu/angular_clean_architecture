@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
   @if (error) {
     <div
-      class="flex items-start gap-2.5 bg-red-500/[0.06] border border-red-500/[0.18] text-red-400/80 text-[12px] px-3.5 py-2.5 rounded-xl"
+      class="flex items-start gap-2.5 bg-red-500/6 border border-red-500/18 text-red-400/80 text-xs px-3.5 py-2.5 rounded-xl"
     >
       <svg
         class="w-4 h-4 shrink-0 mt-0.5"
@@ -19,42 +19,42 @@
   }
 
   <div class="flex flex-col gap-1.5">
-    <label class="text-[12px] text-white/40 font-medium" for="username">Username</label>
+    <label class="text-xs text-white/40 font-medium" for="username">Username</label>
     <input
       id="username"
       formControlName="username"
       type="text"
       autocomplete="username"
       placeholder="emilys"
-      class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-[13px] text-white/80 placeholder:text-white/20 outline-none transition-all duration-200 focus:bg-white/[0.05] focus:border-white/[0.18] focus:ring-1 focus:ring-white/[0.12]"
+      class="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-body text-white/80 placeholder:text-white/20 outline-none transition-all duration-200 focus:bg-white/5 focus:border-white/18 focus:ring-1 focus:ring-white/12"
     />
   </div>
 
   <div class="flex flex-col gap-1.5">
-    <label class="text-[12px] text-white/40 font-medium" for="password">Password</label>
+    <label class="text-xs text-white/40 font-medium" for="password">Password</label>
     <input
       id="password"
       formControlName="password"
       type="password"
       autocomplete="current-password"
       placeholder="••••••••"
-      class="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-[13px] text-white/80 placeholder:text-white/20 outline-none transition-all duration-200 focus:bg-white/[0.05] focus:border-white/[0.18] focus:ring-1 focus:ring-white/[0.12]"
+      class="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-body text-white/80 placeholder:text-white/20 outline-none transition-all duration-200 focus:bg-white/5 focus:border-white/18 focus:ring-1 focus:ring-white/12"
     />
   </div>
 
   <button
     type="submit"
     [disabled]="isLoading || form.invalid"
-    class="w-full bg-white text-[#0b0b0b] font-semibold text-[13px] py-3 rounded-xl mt-1 transition-all duration-200 hover:bg-white/95 disabled:opacity-40 disabled:cursor-not-allowed"
+    class="w-full bg-white text-bg-deep font-semibold text-body py-3 rounded-xl mt-1 transition-all duration-200 hover:bg-white/95 disabled:opacity-40 disabled:cursor-not-allowed"
   >
     @if (isLoading) {
       <span class="inline-flex items-center gap-1.5">
-        <span class="w-1 h-1 rounded-full bg-[#0b0b0b]/60 animate-bounce-dot"></span>
+        <span class="w-1 h-1 rounded-full bg-bg-deep/60 animate-bounce-dot"></span>
         <span
-          class="w-1 h-1 rounded-full bg-[#0b0b0b]/60 animate-bounce-dot [animation-delay:0.15s]"
+          class="w-1 h-1 rounded-full bg-bg-deep/60 animate-bounce-dot [animation-delay:0.15s]"
         ></span>
         <span
-          class="w-1 h-1 rounded-full bg-[#0b0b0b]/60 animate-bounce-dot [animation-delay:0.3s]"
+          class="w-1 h-1 rounded-full bg-bg-deep/60 animate-bounce-dot [animation-delay:0.3s]"
         ></span>
       </span>
     } @else {

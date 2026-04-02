@@ -1,4 +1,10 @@
 {
+  "tailwindCSS.experimental.configFile": "src/tailwind.css",
+  "files.associations": {
+    "tailwind.css": "tailwindcss"
+  },
+  "eslint.run": "onSave",
+  "eslint.validate": ["javascript", "typescript", "html"],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",

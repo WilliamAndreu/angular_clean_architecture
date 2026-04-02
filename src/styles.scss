@@ -1,4 +1,4 @@
-@use 'tailwindcss';
+@use './tailwind';
 
 @keyframes shimmer {
   from {
@@ -34,12 +34,8 @@
   html,
   body {
     height: 100%;
-    background: #090909;
-    font-family:
-      'Inter',
-      system-ui,
-      -apple-system,
-      sans-serif;
+    background: var(--color-bg);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

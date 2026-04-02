@@ -1,34 +1,32 @@
 <div
-  class="w-full max-w-[420px] bg-white/[0.02] border border-white/[0.08] rounded-2xl p-8 flex flex-col items-center gap-6"
+  class="w-full max-w-105 bg-white/2 border border-white/8 rounded-2xl p-8 flex flex-col items-center gap-6"
 >
   <img
-    class="w-24 h-24 rounded-full object-cover border border-white/[0.08]"
+    class="w-24 h-24 rounded-full object-cover border border-white/8"
     [src]="user.image"
     [alt]="user.firstName"
   />
 
   <div class="text-center flex flex-col gap-1">
-    <h2 class="text-[20px] font-semibold text-white/90">
-      {{ user.firstName }} {{ user.lastName }}
-    </h2>
-    <p class="text-[13px] text-white/40">@{{ user.username }}</p>
+    <h2 class="text-xl font-semibold text-white/90">{{ user.firstName }} {{ user.lastName }}</h2>
+    <p class="text-body text-white/40">@{{ user.username }}</p>
   </div>
 
-  <div class="w-full flex flex-col gap-0 border border-white/[0.06] rounded-xl overflow-hidden">
-    <div class="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
-      <span class="text-[12px] text-white/30">{{ 'profile.email' | translate }}</span>
-      <span class="text-[13px] text-white/70">{{ user.email }}</span>
+  <div class="w-full flex flex-col gap-0 border border-white/6 rounded-xl overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-white/6">
+      <span class="text-xs text-white/30">{{ 'profile.email' | translate }}</span>
+      <span class="text-body text-white/70">{{ user.email }}</span>
     </div>
     <div class="flex items-center justify-between px-4 py-3">
-      <span class="text-[12px] text-white/30">{{ 'profile.gender' | translate }}</span>
-      <span class="text-[13px] text-white/70 capitalize">{{ user.gender }}</span>
+      <span class="text-xs text-white/30">{{ 'profile.gender' | translate }}</span>
+      <span class="text-body text-white/70 capitalize">{{ user.gender }}</span>
     </div>
   </div>
 
   <button
     type="button"
     (click)="logout.emit()"
-    class="w-full border border-red-500/[0.18] text-red-400/70 text-[13px] font-medium py-2.5 rounded-xl transition-all duration-200 hover:bg-red-500/[0.06] hover:text-red-400/90"
+    class="w-full border border-red-500/18 text-red-400/70 text-body font-medium py-2.5 rounded-xl transition-all duration-200 hover:bg-red-500/6 hover:text-red-400/90"
   >
     {{ 'profile.sign_out' | translate }}
   </button>
