@@ -2,15 +2,15 @@
   <div class="flex flex-col gap-2">
     <div class="flex items-center gap-2 flex-wrap">
       <span
-        class="text-[10px] font-medium tracking-widest uppercase text-white/30 bg-white/[0.05] px-2 py-0.5 rounded-md"
+        class="text-2xs font-medium tracking-widest uppercase text-white/30 bg-white/5 px-2 py-0.5 rounded-md"
       >
         {{ product.category }}
       </span>
       @if (product.brand) {
-        <span class="text-[11px] text-white/30">{{ product.brand }}</span>
+        <span class="text-tag text-white/30">{{ product.brand }}</span>
       }
     </div>
-    <h1 class="text-[24px] font-semibold text-white/90 leading-snug max-sm:text-[20px]">
+    <h1 class="text-2xl font-semibold text-white/90 leading-snug max-sm:text-xl">
       {{ product.title }}
     </h1>
     <div class="flex items-center gap-2">
@@ -19,36 +19,34 @@
           d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
         />
       </svg>
-      <span class="text-[13px] text-white/45">{{ product.rating.toFixed(1) }}</span>
+      <span class="text-body text-white/45">{{ product.rating.toFixed(1) }}</span>
     </div>
   </div>
 
   <div class="flex items-baseline gap-3 flex-wrap">
-    <span class="text-[32px] font-semibold text-white/90">{{ product.price | price }}</span>
+    <span class="text-price font-semibold text-white/90">{{ product.price | price }}</span>
     @if (product.discountPercentage > 0) {
-      <span class="text-[18px] text-white/25 line-through">
+      <span class="text-lg text-white/25 line-through">
         {{ calcOriginalPrice(product.price, product.discountPercentage) | price }}
       </span>
-      <span
-        class="text-[12px] font-medium text-emerald-400/80 bg-emerald-400/[0.08] px-2 py-0.5 rounded-md"
-      >
+      <span class="text-xs font-medium text-emerald-400/80 bg-emerald-400/8 px-2 py-0.5 rounded-md">
         {{ product.discountPercentage.toFixed(0) }}% off
       </span>
     }
   </div>
 
-  <p class="text-[14px] text-white/55 leading-relaxed">
+  <p class="text-sm text-white/55 leading-relaxed">
     {{ product.description }}
   </p>
 
-  <div class="flex flex-col gap-2 pt-3 border-t border-white/[0.06]">
-    <div class="flex items-center justify-between text-[13px]">
+  <div class="flex flex-col gap-2 pt-3 border-t border-white/6">
+    <div class="flex items-center justify-between text-body">
       <span class="text-white/30">{{ 'products.availability' | translate }}</span>
       <span [class]="product.stock > 0 ? 'text-emerald-400/80' : 'text-red-400/80'">
         {{ product.availabilityStatus }}
       </span>
     </div>
-    <div class="flex items-center justify-between text-[13px]">
+    <div class="flex items-center justify-between text-body">
       <span class="text-white/30">{{ 'products.stock' | translate }}</span>
       <span class="text-white/60">{{ product.stock }} {{ 'products.units' | translate }}</span>
     </div>
@@ -58,7 +56,7 @@
     <div class="flex flex-wrap gap-1.5">
       @for (tag of product.tags; track tag) {
         <span
-          class="text-[11px] text-white/30 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-lg"
+          class="text-tag text-white/30 bg-white/4 border border-white/6 px-2 py-0.5 rounded-lg"
         >
           {{ tag }}
         </span>

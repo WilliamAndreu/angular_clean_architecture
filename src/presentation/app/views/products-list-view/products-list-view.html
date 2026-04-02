@@ -5,9 +5,7 @@
     (searchChange)="onSearchInput($event)"
   />
 
-  <main
-    class="flex-1 max-w-[1320px] w-full mx-auto px-10 py-12 max-lg:px-8 max-sm:px-5 max-sm:py-6"
-  >
+  <main class="flex-1 max-w-330 w-full mx-auto px-10 py-12 max-lg:px-8 max-sm:px-5 max-sm:py-6">
     @if (vm.viewState.isLoading() && vm.viewState.products().length === 0) {
       <app-products-loading />
     } @else if (vm.viewState.error(); as error) {

@@ -9,6 +9,28 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.3.3] — 2026-04-02
+
+### Added
+- `src/tailwind.css` — CSS entry point for Tailwind IntelliSense plugin compatibility with Sass (`@use './tailwind'` in `styles.scss`)
+- `@theme` block with centralized design tokens: colors (`--color-bg`, `--color-bg-deep`, `--color-bg-gallery`), typography (`--font-sans`, `--text-2xs`, `--text-tag`, `--text-body`, `--text-md`, `--text-display`, `--text-price`)
+- `:root` CSS custom properties for SCSS-only use: `--color-overlay`, `--color-border-subtle`
+- `.vscode/settings.json`: Tailwind IntelliSense config, ESLint on save, file associations for `tailwind.css`
+- `.vscode/extensions.json`: `dbaeumer.vscode-eslint`, `bradlc.vscode-tailwindcss`
+
+### Changed
+- `styles.scss` — `@use 'tailwindcss'` replaced with `@use './tailwind'`; hardcoded `#090909` background replaced with `var(--color-bg)`; hardcoded `'Inter', system-ui...` font replaced with `var(--font-sans)`
+- `products-header.scss` — hardcoded `rgba()` values replaced with `var(--color-overlay)` and `var(--color-border-subtle)`
+- Updated opacity notation from arbitrary (`/[0.06]`) to numeric (`/6`) across all HTML templates
+- Updated `max-w` arbitrary values to Tailwind v4 spacing scale (`max-w-[420px]` → `max-w-105`, `max-w-[800px]` → `max-w-200`, `max-w-[1200px]` → `max-w-300`, `max-w-[1320px]` → `max-w-330`)
+- Updated arbitrary font sizes to named tokens (`text-[13px]` → `text-body`, `text-[10px]` → `text-2xs`, etc.)
+- Replaced hardcoded hex colors in HTML with semantic classes (`bg-[#0f0f0f]` → `bg-bg-gallery`, `text-[#0b0b0b]` → `text-bg-deep`)
+
+### Removed
+- `.editorconfig` — redundant with Prettier
+
+---
+
 ## [2.3.2] — 2026-03-31
 
 ### Added
