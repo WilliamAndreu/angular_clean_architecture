@@ -7,6 +7,24 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- ESLint architecture boundaries with TypeScript alias resolution, explicit DI and routing exceptions, and restrictions on infrastructure access from presentation and domain.
+- Architecture regression tests covering imports, reexports, inline import types, dynamic imports, real-file CLI failures, and all 16 path aliases.
+
+### Changed
+
+- Skeleton loading states now use a continuous shimmer instead of a limited opacity pulse, while respecting reduced-motion preferences.
+- Product context and design system documentation moved to `docs/product.md` and `docs/design.md`, with links in the README.
+- Architecture dependency checks centralized in ESLint; the separate architecture script retains naming convention checks.
+
+### Fixed
+
+- Pre-commit hooks load Node through nvm when needed and discover pnpm in its installation directory when GUI Git clients provide a minimal PATH.
+- Architecture checks now cover `main.ts`, unknown source folders, TypeScript import expressions, and overly broad DI and routing exceptions; computed dynamic imports are rejected.
+- Browser API restrictions no longer reject unrelated business properties named `document` or `fetch`.
+- Angular CLI generators now create components in presentation and directives/pipes in core, preserving existing directive and pipe filename conventions.
+
 ---
 
 ## [2.3.3] — 2026-04-02

@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '@environments/environment';
-import { Request } from '@interfaces/request';
-import { AuthRemoteDataSource } from '../source/auth-remote.datasource';
+import { environment } from 'src/core/config/environments/environment';
+import { Request } from 'src/core/http/request';
+import { AuthRemoteDataSource } from 'src/data/datasource/auth/source/auth-remote.source';
 import { LoginDto, LoginRequestDto, TokensDto, UserDto } from './dto/auth.dto';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -6,7 +6,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslatePipe],
   templateUrl: './products-error.html',
-  styleUrl: './products-error.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block min-w-0' },
 })
 export class ProductsError {
   @Input({ required: true }) message!: string;

@@ -1,1 +1,4 @@
-./node_modules/.bin/lint-staged
+. .husky/runtime.sh
+
+pnpm architecture
+pnpm exec lint-staged

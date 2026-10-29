@@ -1,66 +1,50 @@
-<div class="flex flex-col gap-6">
-  <div class="flex flex-col gap-2">
-    <div class="flex items-center gap-2 flex-wrap">
-      <span
-        class="text-2xs font-medium tracking-widest uppercase text-white/30 bg-white/5 px-2 py-0.5 rounded-md"
-      >
-        {{ product.category }}
-      </span>
-      @if (product.brand) {
-        <span class="text-tag text-white/30">{{ product.brand }}</span>
-      }
-    </div>
-    <h1 class="text-2xl font-semibold text-white/90 leading-snug max-sm:text-xl">
-      {{ product.title }}
-    </h1>
-    <div class="flex items-center gap-2">
-      <svg class="w-3.5 h-3.5 text-amber-400/80" viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-        />
-      </svg>
-      <span class="text-body text-white/45">{{ product.rating.toFixed(1) }}</span>
-    </div>
-  </div>
-
-  <div class="flex items-baseline gap-3 flex-wrap">
-    <span class="text-price font-semibold text-white/90">{{ product.price | price }}</span>
-    @if (product.discountPercentage > 0) {
-      <span class="text-lg text-white/25 line-through">
-        {{ calcOriginalPrice(product.price, product.discountPercentage) | price }}
-      </span>
-      <span class="text-xs font-medium text-emerald-400/80 bg-emerald-400/8 px-2 py-0.5 rounded-md">
-        {{ product.discountPercentage.toFixed(0) }}% off
-      </span>
-    }
-  </div>
-
-  <p class="text-sm text-white/55 leading-relaxed">
-    {{ product.description }}
-  </p>
-
-  <div class="flex flex-col gap-2 pt-3 border-t border-white/6">
-    <div class="flex items-center justify-between text-body">
-      <span class="text-white/30">{{ 'products.availability' | translate }}</span>
-      <span [class]="product.stock > 0 ? 'text-emerald-400/80' : 'text-red-400/80'">
-        {{ product.availabilityStatus }}
-      </span>
-    </div>
-    <div class="flex items-center justify-between text-body">
-      <span class="text-white/30">{{ 'products.stock' | translate }}</span>
-      <span class="text-white/60">{{ product.stock }} {{ 'products.units' | translate }}</span>
-    </div>
-  </div>
-
-  @if (product.tags.length > 0) {
-    <div class="flex flex-wrap gap-1.5">
-      @for (tag of product.tags; track tag) {
-        <span
-          class="text-tag text-white/30 bg-white/4 border border-white/6 px-2 py-0.5 rounded-lg"
-        >
-          {{ tag }}
-        </span>
-      }
-    </div>
+<!-- Identidad del producto: título y categoría sin encabezados decorativos. -->
+<h1 class="text-headline font-bold">{{ product.title }}</h1>
+<div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted capitalize">
+  <span>{{ product.category }}</span>
+  @if (product.brand) {
+    <span>{{ product.brand }}</span>
+  }
+  <span class="inline-flex items-center gap-1.5 tabular-nums"
+    ><svg class="size-4 text-rating" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+      <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg
+    ><span class="sr-only">Rated </span>{{ product.rating.toFixed(1)
+    }}<span class="sr-only"> out of 5</span></span
+  >
+</div>
+<!-- Precio: importe actual, referencia y descuento de la API. -->
+<div class="mt-7 mb-5 flex flex-wrap items-center gap-3.5 tabular-nums">
+  <strong class="text-3xl font-bold tracking-heading">{{ product.price | price }}</strong>
+  @if (product.discountPercentage > 0) {
+    <s class="text-muted">{{
+      calcOriginalPrice(product.price, product.discountPercentage) | price
+    }}</s
+    ><span class="rounded-tag bg-success-surface px-2 py-1 text-caption font-demibold text-success"
+      >{{ product.discountPercentage.toFixed(0) }}% off</span
+    >
   }
 </div>
+<!-- Descripción y disponibilidad. -->
+<p class="max-w-copy leading-relaxed text-muted">{{ product.description }}</p>
+<dl class="mt-7 border-t border-line pt-6">
+  <div class="mt-2 flex justify-between gap-6 text-sm">
+    <dt class="text-muted">{{ 'products.availability' | translate }}</dt>
+    <dd class="m-0 text-right font-semibold" [class.text-success]="product.stock > 0">
+      {{ product.availabilityStatus }}
+    </dd>
+  </div>
+  <div class="mt-2 flex justify-between gap-6 text-sm">
+    <dt class="text-muted">{{ 'products.stock' | translate }}</dt>
+    <dd class="m-0 text-right font-semibold">
+      {{ product.stock }} {{ 'products.units' | translate }}
+    </dd>
+  </div>
+</dl>
+<!-- Etiquetas del catálogo. -->
+@if (product.tags.length > 0) {
+  <div class="mt-6 flex flex-wrap gap-2">
+    @for (tag of product.tags; track tag) {
+      <span class="rounded-tag bg-surface px-2.5 py-1 text-caption text-muted">{{ tag }}</span>
+    }
+  </div>
+}

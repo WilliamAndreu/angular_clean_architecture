@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { UserEntity } from '@models/auth/auth-entity.model';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -7,7 +7,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslatePipe],
   templateUrl: './user-profile-card.html',
-  styleUrl: './user-profile-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block min-w-0' },
 })
 export class UserProfileCard {
   @Input({ required: true }) user!: UserEntity;

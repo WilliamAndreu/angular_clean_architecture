@@ -1,16 +1,7 @@
+<!-- Error: mensaje traducido de la operación actual. -->
 <div
-  class="flex items-center gap-2.5 bg-red-500/6 border border-red-500/18 text-red-400/80 text-body px-4 py-3 rounded-xl"
+  class="view-enter rounded-notice border px-5 py-4 text-sm border-danger-line bg-danger-surface text-danger"
+  role="alert"
 >
-  <svg
-    class="w-4 h-4 shrink-0"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.5"
-  >
-    <circle cx="12" cy="12" r="10" />
-    <line x1="12" y1="8" x2="12" y2="12" />
-    <line x1="12" y1="16" x2="12.01" y2="16" />
-  </svg>
   {{ message | translate }}
 </div>

@@ -1,0 +1,11 @@
+<!-- Acción destructiva: vaciado del carrito con bloqueo durante el guardado. -->
+@if (vm.viewState.cart()?.items.length) {
+  <button
+    type="button"
+    class="inline-flex min-h-control items-center justify-center gap-2.5 rounded-control border px-5 py-3 text-center text-sm leading-snug font-bold no-underline transition-colors motion-safe:active:translate-y-px motion-reduce:transition-none border-danger-line bg-canvas text-danger not-disabled:hover:bg-danger-hover mt-6 w-full"
+    [disabled]="vm.viewState.isBusy()"
+    (click)="vm.clear()"
+  >
+    {{ 'cart.clear' | translate }}
+  </button>
+}

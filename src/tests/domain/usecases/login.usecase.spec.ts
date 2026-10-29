@@ -1,35 +1,30 @@
-import { describe, it, expect, vi } from 'vitest';
-import { of } from 'rxjs';
-import { firstValueFrom } from 'rxjs';
-import { AppError } from 'src/core/errors/app-error';
-import { LoginEntity } from 'src/domain/entities/auth/auth-entity.model';
-
-const mockLogin: LoginEntity = {
-  accessToken: 'access-token',
-  refreshToken: 'refresh-token',
-  user: {
-    id: 1,
-    username: 'john',
-    email: 'john@example.com',
-    firstName: 'John',
-    lastName: 'Doe',
-    gender: 'male',
-    image: 'avatar.jpg',
-  },
-};
-
+import { describe, it, expect } from 'vitest';
+import { firstValueFrom, throwError } from 'rxjs';
+import { LoginUseCase } from '@usecases/auth/login.usecase';
+import { InvalidCredentialsError } from 'src/domain/errors/auth/auth.errors';
+import { AppError } from 'src/domain/errors/app-error';
+import { authRepository } from '../../fixtures';
 describe('LoginUseCase', () => {
-  it('returns login entity on success', async () => {
-    const repo = { login: vi.fn((_u: string, _p: string) => of(mockLogin)) };
-    const result = await firstValueFrom(repo.login('john', 'pass'));
-    expect(result.accessToken).toBe('access-token');
-    expect(result.user.username).toBe('john');
+  it('delegates credentials and returns the entity', async () => {
+    const repo = authRepository();
+    const usecase = new LoginUseCase(repo);
+    const credentials = { username: 'emilys', password: 'emilyspass' };
+    expect((await firstValueFrom(usecase.execute(credentials))).user.id).toBe(1);
+    expect(repo.login).toHaveBeenCalledWith(credentials);
   });
-
-  it('wraps auth error with AppError', () => {
-    const err = new Error('Unauthorized');
-    const wrapped = new AppError('errors.auth.login_failed', { detail: err.message });
-    expect(wrapped.messageKey).toBe('errors.auth.login_failed');
-    expect(wrapped).toBeInstanceOf(AppError);
+  it('preserves typed credential errors', async () => {
+    const repo = authRepository();
+    const error = new InvalidCredentialsError('errors.auth.invalid_credentials');
+    repo.login.mockReturnValue(throwError(() => error));
+    await expect(
+      firstValueFrom(new LoginUseCase(repo).execute({ username: 'x', password: 'x' })),
+    ).rejects.toBe(error);
+  });
+  it('normalizes unexpected errors', async () => {
+    const repo = authRepository();
+    repo.login.mockReturnValue(throwError(() => new Error('unexpected')));
+    await expect(
+      firstValueFrom(new LoginUseCase(repo).execute({ username: 'x', password: 'x' })),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

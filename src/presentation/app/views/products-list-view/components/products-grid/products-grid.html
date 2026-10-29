@@ -1,12 +1,17 @@
+<!-- Cuadrícula: identidad estable por producto. -->
 <div
-  class="grid w-full grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-5 justify-center max-[640px]:grid-cols-2 max-[640px]:gap-3"
+  class="grid grid-cols-1 gap-x-4 gap-y-6 xs:grid-cols-2 md:grid-cols-3 md:gap-x-6 md:gap-y-8 xl:grid-cols-4"
 >
   @for (product of products; track product.id) {
-    <app-product-card [product]="product" />
+    <app-product-card class="content-enter" [product]="product" />
   } @empty {
-    <div class="col-span-full py-24 flex flex-col items-center gap-2 text-center">
-      <p class="text-sm font-medium text-white/45">No products found</p>
-      <p class="text-xs text-white/25">No results for &ldquo;{{ searchTerm }}&rdquo;</p>
+    <!-- Estado vacío: conserva el contexto de búsqueda. -->
+    <div class="content-enter col-span-full px-6 py-18 text-center">
+      <h2 class="mb-3 text-2xl font-semibold">No products found</h2>
+      <p class="text-muted">Try another search or choose a different category.</p>
+      @if (searchTerm) {
+        <p class="text-muted">No results for &ldquo;{{ searchTerm }}&rdquo;</p>
+      }
     </div>
   }
 </div>

@@ -1,37 +1,18 @@
-import { describe, it, expect, vi } from 'vitest';
-import { of } from 'rxjs';
-import { firstValueFrom } from 'rxjs';
-import { AppError } from 'src/core/errors/app-error';
-import { ProductEntity } from 'src/domain/entities/products/product-entity.model';
-
-const mockProduct: ProductEntity = {
-  id: 42,
-  title: 'Widget',
-  description: 'A widget',
-  price: 9.99,
-  discountPercentage: 0,
-  rating: 4.2,
-  stock: 10,
-  brand: 'ACME',
-  category: 'tools',
-  thumbnail: 'thumb.jpg',
-  images: [],
-  availabilityStatus: 'In Stock',
-  tags: [],
-};
-
+import { describe, it, expect } from 'vitest';
+import { firstValueFrom, throwError } from 'rxjs';
+import { GetProductUseCase } from '@usecases/products/get-product.usecase';
+import { ProductNotFoundError } from 'src/domain/errors/products/products.errors';
+import { productsRepository, product } from '../../fixtures';
 describe('GetProductUseCase', () => {
-  it('returns product entity from repository', async () => {
-    const repo = { getProduct: vi.fn((_id: number) => of(mockProduct)) };
-    const result = await firstValueFrom(repo.getProduct(42));
-    expect(result.id).toBe(42);
-    expect(result.title).toBe('Widget');
+  it('delegates the product ID', async () => {
+    const repo = productsRepository();
+    expect(await firstValueFrom(new GetProductUseCase(repo).execute(1))).toEqual(product);
+    expect(repo.getProduct).toHaveBeenCalledWith(1);
   });
-
-  it('wraps error as AppError with correct messageKey', () => {
-    const err = new Error('Not found');
-    const wrapped = new AppError('errors.products.load_failed', { detail: err.message });
-    expect(wrapped).toBeInstanceOf(AppError);
-    expect(wrapped.messageKey).toBe('errors.products.load_failed');
+  it('preserves product-not-found errors', async () => {
+    const repo = productsRepository();
+    const error = new ProductNotFoundError('errors.products.not_found');
+    repo.getProduct.mockReturnValue(throwError(() => error));
+    await expect(firstValueFrom(new GetProductUseCase(repo).execute(1))).rejects.toBe(error);
   });
 });

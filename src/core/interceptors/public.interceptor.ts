@@ -1,28 +1,10 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import {
-  AppError,
-  BadRequestError,
-  NetworkError,
-  NotFoundError,
-  ServerError,
-  UnauthorizedError,
-} from 'src/core/errors/app-error';
+import { HttpErrorMapperSource } from 'src/core/mappers/error/source/http-error-mapper.source';
 
+/** Normalize transport failures; recovery, reporting and UI belong to their callers. */
 export const publicInterceptor: HttpInterceptorFn = (req, next) => {
-  return next(req).pipe(
-    catchError((error: HttpErrorResponse) => {
-      const appError = mapHttpError(error);
-      return throwError(() => appError);
-    }),
-  );
+  const mapper = inject(HttpErrorMapperSource);
+  return next(req).pipe(catchError((error: unknown) => throwError(() => mapper.map(error))));
 };
-
-function mapHttpError(error: HttpErrorResponse): AppError {
-  if (error.status === 400) return new BadRequestError('errors.unknown');
-  if (error.status === 401) return new UnauthorizedError('errors.unauthorized');
-  if (error.status === 404) return new NotFoundError('errors.not_found');
-  if (error.status === 0) return new NetworkError('errors.network');
-  if (error.status >= 500) return new ServerError('errors.server');
-  return new AppError('errors.unknown');
-}

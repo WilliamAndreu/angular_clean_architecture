@@ -1,30 +1,23 @@
-set shell := ["zsh", "-i", "-c"]
-
-# Muestra los comandos disponibles
 default:
     @just --list
 
-# Instala dependencias y configura el proyecto
 setup:
-    nvm install
-    npm install
+    pnpm install --frozen-lockfile
 
-# Ejecuta los tests
 test:
-    npm test
+    pnpm test
 
-# Ejecuta los tests con coverage
 coverage:
-    npm test -- --coverage
+    pnpm test:coverage
 
-# Ejecuta el linter
 lint:
-    npm run lint
+    pnpm lint
 
-# Ejecuta el linter y corrige errores automáticamente
 lint-fix:
-    npm run lint -- --fix
+    pnpm lint --fix
 
-# Formatea el código
 format:
-    npm run format
+    pnpm format
+
+check:
+    pnpm check

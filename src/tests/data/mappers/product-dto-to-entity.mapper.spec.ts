@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ProductDtoToEntityMapper } from 'src/data/repositories/products/mappers/product-dto-to-entity.mapper';
+import { ProductDtoToEntityMapperImp } from 'src/data/repositories/products/mappers/product-dto-to-entity.mapper.imp';
 import { ProductDto } from 'src/data/datasource/products/remote/dto/product.dto';
 import { ProductsDto } from 'src/data/datasource/products/remote/dto/products.dto';
 import { ProductEntity } from 'src/domain/entities/products/product-entity.model';
@@ -20,8 +20,8 @@ const mockProductDto: ProductDto = {
   tags: ['test', 'product'],
 };
 
-describe('ProductDtoToEntityMapper — mapFrom', () => {
-  const mapper = new ProductDtoToEntityMapper();
+describe('ProductDtoToEntityMapperImp — mapFrom', () => {
+  const mapper = new ProductDtoToEntityMapperImp();
 
   it('maps all fields correctly', () => {
     const entity = mapper.mapFrom(mockProductDto);
@@ -66,8 +66,8 @@ describe('ProductDtoToEntityMapper — mapFrom', () => {
   });
 });
 
-describe('ProductDtoToEntityMapper — mapTo', () => {
-  const mapper = new ProductDtoToEntityMapper();
+describe('ProductDtoToEntityMapperImp — mapTo', () => {
+  const mapper = new ProductDtoToEntityMapperImp();
 
   it('maps entity back to DTO shape', () => {
     const entity: ProductEntity = {
@@ -93,8 +93,8 @@ describe('ProductDtoToEntityMapper — mapTo', () => {
   });
 });
 
-describe('ProductDtoToEntityMapper — mapListFrom', () => {
-  const mapper = new ProductDtoToEntityMapper();
+describe('ProductDtoToEntityMapperImp — mapListFrom', () => {
+  const mapper = new ProductDtoToEntityMapperImp();
 
   it('maps a list with one product', () => {
     const dto: ProductsDto = { products: [mockProductDto], total: 1, skip: 0, limit: 20 };

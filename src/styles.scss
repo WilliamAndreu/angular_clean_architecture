@@ -1,42 +1,86 @@
-@use './tailwind';
+/* Fuente local: la escala y el resto del sistema se definen en el theme de Tailwind. */
+@font-face {
+  font-family: 'Manrope';
+  src: url('/assets/fonts/manrope.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
 
-@keyframes shimmer {
-  from {
-    background-position: -200% 0;
+/* Primitiva compartida: la geometría del skeleton pertenece al HTML de cada vista. */
+@layer components {
+  .skeleton {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background-color: var(--color-line);
+    border-radius: var(--radius-control);
   }
-  to {
-    background-position: 200% 0;
+
+  .skeleton::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-canvas) 75%, transparent),
+      transparent
+    );
+    content: '';
+    pointer-events: none;
+    transform: translateX(-100%);
   }
 }
 
-@keyframes bounce-dot {
-  0%,
-  80%,
-  100% {
-    transform: scale(0.6);
-    opacity: 0.3;
+/* Entrada inmediata: contenido ya visible, sin retrasos ni cambios de layout. */
+@keyframes view-enter {
+  from {
+    opacity: 0.72;
   }
-  40% {
-    transform: scale(1);
+  to {
     opacity: 1;
   }
 }
 
-@layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+@keyframes content-enter {
+  from {
+    opacity: 0.72;
+    transform: translateY(0.125rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* El brillo recorre cada bloque sin alterar su geometría ni su opacidad. */
+@keyframes skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .view-enter {
+    animation: view-enter 160ms var(--default-transition-timing-function);
   }
 
-  html,
-  body {
-    height: 100%;
-    background: var(--color-bg);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  .content-enter {
+    animation: content-enter 180ms var(--default-transition-timing-function);
+  }
+
+  .skeleton::after {
+    animation: skeleton-shimmer 1600ms linear infinite;
+  }
+}
+
+/* Movimiento reducido: entrada breve solo por opacidad y skeletons estáticos. */
+@media (prefers-reduced-motion: reduce) {
+  .view-enter,
+  .content-enter {
+    animation: view-enter 100ms var(--default-transition-timing-function);
   }
 }
