@@ -1,53 +1,41 @@
-<article
-  [routerLink]="['/products', product().id]"
-  class="group relative bg-white/2 border border-white/6 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:bg-white/4 hover:border-white/12"
->
-  <div class="relative aspect-square overflow-hidden bg-bg-gallery">
+<!-- Enlace de producto: navegación nativa con teclado y apertura en otra pestaña. -->
+<a [routerLink]="['/products', product().id]" class="group block h-full rounded-card no-underline">
+  <!-- Imagen y descuento del producto. -->
+  <div class="relative aspect-square overflow-hidden rounded-card bg-surface">
     @defer (on viewport) {
       <img
+        class="size-full object-contain p-4 transition-transform ease-product motion-safe:group-hover:scale-105 motion-reduce:transition-none md:p-6"
         appImgFallback
-        class="w-full h-full object-contain p-5 transition-transform duration-500 group-hover:scale-[1.03]"
         [src]="product().thumbnail"
         [alt]="product().title"
         loading="lazy"
+        width="320"
+        height="320"
       />
     } @placeholder {
-      <div class="skeleton-shimmer w-full h-full"></div>
+      <div class="size-full bg-surface" aria-hidden="true"></div>
     }
-
-    <span
-      class="absolute top-3 left-3 text-2xs font-medium tracking-wide uppercase text-white/40 bg-white/5 px-2 py-0.5 rounded-md"
+    @if (product().discountPercentage > 0) {
+      <span
+        class="absolute top-2.5 left-2.5 rounded-tag bg-canvas px-2 py-1 text-xs font-bold text-ink tabular-nums md:top-3.5 md:left-3.5"
+        >−{{ product().discountPercentage.toFixed(0) }}%</span
+      >
+    }
+  </div>
+  <!-- Información: categoría, nombre, valoración y precio. -->
+  <div class="mt-4 flex items-center justify-between gap-2 text-caption text-muted">
+    <span class="wrap-anywhere capitalize">{{ product().category }}</span
+    ><span class="inline-flex shrink-0 items-center gap-1 tabular-nums"
+      ><svg class="size-3.5 text-rating" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+        <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg
+      ><span class="sr-only">Rated </span>{{ product().rating.toFixed(1)
+      }}<span class="sr-only"> out of 5</span></span
     >
-      {{ product().category }}
-    </span>
   </div>
-
-  <div class="px-4 pt-4 pb-4 flex flex-col gap-2">
-    <p class="text-body font-medium text-white/85 line-clamp-2 leading-snug">
-      {{ product().title }}
-    </p>
-
-    <div class="flex items-center justify-between gap-2">
-      <span class="text-md font-semibold text-white/90">
-        {{ product().price | price }}
-      </span>
-
-      @if (product().discountPercentage > 0) {
-        <span
-          class="text-2xs font-medium text-emerald-400/80 bg-emerald-400/8 px-1.5 py-0.5 rounded-md"
-        >
-          -{{ product().discountPercentage.toFixed(0) }}%
-        </span>
-      }
-
-      <span class="flex items-center gap-1 text-tag text-white/35 ml-auto">
-        <svg class="w-3 h-3 text-amber-400/70" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-          />
-        </svg>
-        {{ product().rating.toFixed(1) }}
-      </span>
-    </div>
-  </div>
-</article>
+  <h2
+    class="mt-1.5 text-base leading-card font-semibold wrap-anywhere group-hover:text-primary group-hover:underline group-hover:underline-offset-4"
+  >
+    {{ product().title }}
+  </h2>
+  <p class="mt-2 text-lg font-price tabular-nums">{{ product().price | price }}</p>
+</a>

@@ -1,0 +1,25 @@
+<!-- Resumen: cantidades e importes calculados por el dominio. -->
+@if (vm.viewState.cart(); as cart) {
+  <div aria-live="polite">
+    <h2 class="text-xl font-semibold">Cart summary</h2>
+    <dl class="my-6">
+      <div class="flex justify-between gap-5 text-sm mt-3.5">
+        <dt class="text-muted">{{ 'cart.quantity' | translate }}</dt>
+        <dd class="m-0 font-demibold whitespace-nowrap tabular-nums">{{ cart.totalQuantity }}</dd>
+      </div>
+      <div class="flex justify-between gap-5 text-sm mt-3.5">
+        <dt class="text-muted">{{ 'cart.subtotal' | translate }}</dt>
+        <dd class="m-0 font-demibold whitespace-nowrap tabular-nums">
+          {{ cart.subtotal | price }}
+        </dd>
+      </div>
+      <div class="border-t border-line pt-5 flex justify-between gap-5 text-sm mt-3.5">
+        <dt class="font-demibold text-ink">{{ 'cart.total' | translate }}</dt>
+        <dd class="m-0 font-demibold whitespace-nowrap tabular-nums text-xl">
+          {{ cart.total | price }}
+        </dd>
+      </div>
+    </dl>
+    <p class="text-caption text-muted">This is a demo cart. No payment is collected.</p>
+  </div>
+}

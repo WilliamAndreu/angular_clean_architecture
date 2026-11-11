@@ -1,16 +1,27 @@
-import { Component, OnDestroy, OnInit, effect, inject, viewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  effect,
+  inject,
+  viewChild,
+  ElementRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ProductsViewModel } from './viewmodel/products.viewmodel';
 import { ProductsHeader } from './components/products-header/products-header';
 import { ProductsGrid } from './components/products-grid/products-grid';
-import { ProductsLoading } from './components/products-loading/products-loading';
+import { ProductsSkeleton } from './components/products-skeleton/products-skeleton';
 import { ProductsError } from './components/products-error/products-error';
 
 @Component({
   selector: 'app-products-list-view',
-  imports: [ProductsHeader, ProductsGrid, ProductsLoading, ProductsError],
+  imports: [TranslatePipe, ProductsHeader, ProductsGrid, ProductsSkeleton, ProductsError],
   providers: [ProductsViewModel],
   templateUrl: './products-list-view.html',
-  styleUrl: './products-list-view.scss',
+  host: { class: 'block min-w-0' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class ProductsListView implements OnInit, OnDestroy {

@@ -1,23 +1,74 @@
 {
   "errors": {
-    "network": "No internet connection",
+    "network": "Could not reach the server. Please try again",
     "unauthorized": "Session expired. Please log in again",
     "not_found": "Resource not found",
     "server": "Server error. Please try again",
     "unknown": "An unexpected error occurred",
-    "products": { "load_failed": "Could not load products", "not_found": "Product not found" },
+    "products": {
+      "load_failed": "Could not load products",
+      "not_found": "Product not found",
+      "invalid_query": "Invalid product query"
+    },
     "auth": {
-      "login_failed": "Invalid credentials",
+      "login_failed": "Could not sign in. Please try again",
       "invalid_credentials": "Invalid username or password",
       "session_expired": "Session expired. Please log in again"
-    }
+    },
+    "cart": {
+      "invalid_quantity": "Enter a positive whole quantity",
+      "insufficient_stock": "There is not enough stock for this quantity",
+      "item_not_found": "This product is no longer in your cart"
+    },
+    "validation": "Please check the submitted information",
+    "forbidden": "You do not have permission to perform this action",
+    "conflict": "The information has changed. Please review it and try again",
+    "timeout": "The request timed out. Please try again",
+    "rate_limit": "Too many requests. Please wait before trying again"
   },
   "products": {
-    "header": { "store": "Store", "title": "Products", "search": "Search products" },
+    "header": {
+      "store": "Store",
+      "title": "Products",
+      "search": "Search products"
+    },
     "availability": "Availability",
     "stock": "Stock",
-    "units": "units"
+    "units": "units",
+    "category": "Category",
+    "all_categories": "All categories",
+    "sort": "Sort by",
+    "sort_title": "Title A\u2013Z",
+    "sort_price_asc": "Price: low to high",
+    "sort_price_desc": "Price: high to low",
+    "sort_rating": "Highest rated",
+    "results": "results",
+    "load_more": "Load more",
+    "retry_categories": "Retry loading categories"
   },
-  "profile": { "email": "Email", "gender": "Gender", "sign_out": "Sign out" },
-  "common": { "back": "Products", "loading": "Loading...", "retry": "Retry" }
+  "profile": {
+    "email": "Email",
+    "gender": "Gender",
+    "sign_out": "Sign out"
+  },
+  "common": {
+    "back": "Products",
+    "loading": "Loading...",
+    "retry": "Retry"
+  },
+  "cart": {
+    "title": "Cart",
+    "profile": "Profile",
+    "quantity": "Quantity",
+    "update": "Update",
+    "remove": "Remove",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "total": "Total after discounts",
+    "clear": "Clear cart",
+    "add": "Add to cart",
+    "added": "Product added to cart",
+    "simulation": "Demo: DummyJSON simulates changes. Your cart changes are kept in this browser, separately for each user.",
+    "adding": "Adding\u2026"
+  }
 }

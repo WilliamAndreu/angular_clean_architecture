@@ -42,3 +42,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Capturas y decisiones locales de las herramientas de diseño
+/.impeccable/review/
+/.impeccable/questions/

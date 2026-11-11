@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -12,7 +20,8 @@ export interface LoginFormValue {
   standalone: true,
   imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './login-form.html',
-  styleUrl: './login-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block min-w-0' },
 })
 export class LoginForm {
   @Input({ required: true }) isLoading!: boolean;
@@ -20,6 +29,7 @@ export class LoginForm {
   @Output() submitted = new EventEmitter<LoginFormValue>();
 
   private readonly fb = inject(FormBuilder);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
 
   readonly form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -27,7 +37,12 @@ export class LoginForm {
   });
 
   onSubmit(): void {
-    if (this.form.invalid) return;
+    if (this.isLoading) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.element.nativeElement.querySelector<HTMLInputElement>('input.ng-invalid')?.focus();
+      return;
+    }
     this.submitted.emit(this.form.getRawValue());
   }
 }

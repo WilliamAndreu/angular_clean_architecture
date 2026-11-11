@@ -1,13 +1,41 @@
-<div class="min-h-screen px-5 py-16 flex items-center justify-center">
+<!-- Navegación: continuidad con el catálogo. -->
+<app-detail-header backLabel="Products" backRoute="/" />
+<main
+  class="view-enter mx-auto w-full max-w-login px-5 pt-8 pb-12 md:px-12 md:pt-12 md:pb-18 flex flex-col items-center gap-10 md:grid md:min-h-login-min md:grid-cols-2 lg:gap-22"
+>
+  <!-- Contexto: capacidades reales de la cuenta de demostración. -->
   <section
-    class="w-full max-w-105 bg-white/2 border border-white/8 rounded-2xl p-8 flex flex-col gap-8 shadow-[0_20px_80px_rgba(0,0,0,0.35)]"
+    class="order-2 w-full max-w-form rounded-gallery bg-brand-surface p-8 text-brand-ink md:order-none md:max-w-none lg:p-12"
+    aria-label="About your demo account"
   >
-    <app-login-header />
-    <app-login-form
+    <h2 class="text-3xl font-bold md:text-4xl lg:text-brand-display">
+      Your finds.<br />Your space.
+    </h2>
+    <p class="mt-6 max-w-intro">
+      Sign in to view your profile and keep your cart together as you explore.
+    </p>
+    <div class="mt-7 flex items-start gap-3 border-t border-brand-line pt-6 text-caption lg:mt-16">
+      <svg
+        class="size-6 shrink-0"
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+      >
+        <path d="M12 3 3 7v5c0 5 9 9 9 9s9-4 9-9V7l-9-4Z" />
+        <path d="m8 12 3 3 5-6" />
+      </svg>
+      <p>A working demo, powered by DummyJSON.<br />No real purchases or payments.</p>
+    </div>
+  </section>
+  <!-- Acceso: formulario y credenciales de prueba. -->
+  <section class="order-1 w-full max-w-form md:order-none" aria-labelledby="login-title">
+    <app-login-header /><app-login-form
+      class="mt-7 block"
       [isLoading]="vm.viewState.isLoading()"
       [error]="vm.viewState.error()"
       (submitted)="onSubmit($event)"
-    />
-    <app-login-footer />
+    /><app-login-footer class="mt-6 block" />
   </section>
-</div>
+</main>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ProductEntity } from '@models/products/product-entity.model';
 import { ImgFallbackDirective } from '@directives/img-fallback.directive';
 
@@ -7,7 +7,8 @@ import { ImgFallbackDirective } from '@directives/img-fallback.directive';
   standalone: true,
   imports: [ImgFallbackDirective],
   templateUrl: './product-gallery.html',
-  styleUrl: './product-gallery.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block min-w-0' },
 })
 export class ProductGallery {
   @Input({ required: true }) product!: ProductEntity;

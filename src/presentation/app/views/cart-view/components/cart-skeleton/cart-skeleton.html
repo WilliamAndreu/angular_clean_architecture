@@ -1,0 +1,27 @@
+<!-- Carga: filas y resumen reservan el espacio del carrito sin controles ficticios. -->
+<div role="status">
+  <span class="sr-only">{{ 'common.loading' | translate }}</span>
+  <div
+    class="skeleton-group grid grid-cols-1 items-start gap-7 lg:grid-cols-[minmax(0,1fr)_var(--container-summary)] lg:gap-12"
+    aria-hidden="true"
+  >
+    <div>
+      @for (item of [0, 1, 2]; track item) {
+        <div class="flex items-start gap-4 border-b border-line py-6 first:pt-0 sm:gap-6">
+          <div class="skeleton h-22 w-19 shrink-0 rounded-notice sm:size-28"></div>
+          <div class="min-w-0 flex-1">
+            <div class="skeleton h-6 w-4/5 max-w-80"></div>
+            <div class="skeleton mt-1 h-6 w-20"></div>
+            <div class="skeleton mt-4 h-20 w-full max-w-80"></div>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="w-full max-w-xl rounded-card bg-surface p-7 lg:max-w-none">
+      <div class="skeleton h-7 w-1/2"></div>
+      <div class="skeleton mt-6 h-6 w-full"></div>
+      <div class="skeleton mt-4 h-6 w-full"></div>
+      <div class="skeleton mt-7 h-control w-full"></div>
+    </div>
+  </div>
+</div>

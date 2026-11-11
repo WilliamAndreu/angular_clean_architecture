@@ -5,5 +5,8 @@ export class ProductDetailState {
   readonly product = signal<ProductEntity | null>(null);
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
+  readonly isAdding = signal(false);
+  readonly cartMessage = signal<string | null>(null);
+  readonly cartError = signal<string | null>(null);
   readonly activeImage = signal<number>(0);
 }

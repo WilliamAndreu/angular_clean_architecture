@@ -1,0 +1,27 @@
+<!-- Error: mensaje y reintento de la operación de lectura. -->
+@if (vm.viewState.error(); as error) {
+  <div
+    class="view-enter rounded-notice border px-5 py-4 text-sm border-danger-line bg-danger-surface text-danger"
+  >
+    <p role="alert">{{ error | translate }}</p>
+    <button
+      type="button"
+      class="inline-flex min-h-control items-center justify-center gap-2.5 rounded-control border px-5 py-3 text-center text-sm leading-snug font-bold no-underline transition-colors motion-safe:active:translate-y-px motion-reduce:transition-none border-control bg-canvas text-ink not-disabled:hover:bg-surface mt-3"
+      [disabled]="vm.viewState.isBusy()"
+      (click)="vm.load()"
+    >
+      {{ 'common.retry' | translate }}
+    </button>
+  </div>
+} @else if (!vm.viewState.isBusy() && !vm.viewState.cart()?.items.length) {
+  <!-- Vacío: siguiente paso hacia el catálogo. -->
+  <div class="view-enter py-12">
+    <h2 class="text-2xl font-semibold">{{ 'cart.empty' | translate }}</h2>
+    <p class="mt-3 mb-6 text-muted">Find something you like and add it here.</p>
+    <a
+      class="inline-flex min-h-control items-center justify-center gap-2.5 rounded-control border px-5 py-3 text-center text-sm leading-snug font-bold no-underline transition-colors motion-safe:active:translate-y-px motion-reduce:transition-none border-primary bg-primary text-canvas not-disabled:hover:bg-primary-hover"
+      routerLink="/"
+      >Explore products</a
+    >
+  </div>
+}

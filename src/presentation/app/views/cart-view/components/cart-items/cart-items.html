@@ -1,0 +1,55 @@
+<!-- Lista: productos con identidad estable durante las operaciones. -->
+<ul class="m-0 list-none p-0" [attr.aria-busy]="vm.viewState.isBusy()">
+  @for (item of vm.viewState.cart()?.items ?? []; track item.productId) {
+    <li class="flex items-start gap-4 border-b border-line py-6 first:pt-0 sm:gap-6">
+      <!-- Producto: imagen, enlace y precio unitario. -->
+      <img
+        class="h-22 w-19 shrink-0 rounded-notice bg-surface object-contain p-2.5 sm:size-28"
+        appImgFallback
+        [src]="item.thumbnail"
+        [alt]="item.title"
+        width="112"
+        height="112"
+      />
+      <div class="min-w-0 flex-1">
+        <a
+          [routerLink]="['/products', item.productId]"
+          class="font-demibold wrap-anywhere no-underline hover:text-primary hover:underline"
+          >{{ item.title }}</a
+        >
+        <p class="mt-1 tabular-nums">{{ item.price | price }}</p>
+        <!-- Edición: cantidad y acciones independientes. -->
+        <div class="mt-4 flex flex-wrap items-end gap-2 sm:gap-3">
+          <label class="grid gap-1.5" [for]="'quantity-' + item.productId"
+            >{{ 'cart.quantity' | translate
+            }}<input
+              class="aria-invalid:border-danger w-20"
+              #quantity
+              [id]="'quantity-' + item.productId"
+              type="number"
+              min="1"
+              step="1"
+              [value]="item.quantity"
+              [disabled]="vm.viewState.isBusy()" /></label
+          ><button
+            type="button"
+            class="inline-flex min-h-control items-center justify-center gap-2.5 rounded-control border px-5 py-3 text-center text-sm leading-snug font-bold no-underline transition-colors motion-safe:active:translate-y-px motion-reduce:transition-none border-control bg-canvas text-ink not-disabled:hover:bg-surface px-3 sm:px-5"
+            [attr.aria-label]="('cart.update' | translate) + ' ' + item.title"
+            [disabled]="vm.viewState.isBusy()"
+            (click)="vm.updateQuantity(item.productId, quantity.valueAsNumber)"
+          >
+            {{ 'cart.update' | translate }}</button
+          ><button
+            type="button"
+            class="min-h-control border-0 bg-transparent p-2 text-sm text-danger underline underline-offset-4"
+            [attr.aria-label]="('cart.remove' | translate) + ' ' + item.title"
+            [disabled]="vm.viewState.isBusy()"
+            (click)="vm.updateQuantity(item.productId, 0)"
+          >
+            {{ 'cart.remove' | translate }}
+          </button>
+        </div>
+      </div>
+    </li>
+  }
+</ul>

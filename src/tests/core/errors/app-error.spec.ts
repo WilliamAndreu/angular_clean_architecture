@@ -5,7 +5,7 @@ import {
   NotFoundError,
   UnauthorizedError,
   ServerError,
-} from 'src/core/errors/app-error';
+} from 'src/domain/errors/app-error';
 
 describe('AppError', () => {
   it('stores messageKey', () => {

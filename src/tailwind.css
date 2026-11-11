@@ -1,27 +1,128 @@
 @import 'tailwindcss';
 
-/* Variables solo para uso en SCSS via var() */
-:root {
-  --color-overlay: rgba(9, 9, 9, 0.9);
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
+/* Colores semánticos: única fuente para superficies, acciones y estados. */
+@theme static {
+  --color-*: initial;
+  --color-canvas: #ffffff;
+  --color-ink: #172335;
+  --color-muted: #576579;
+  --color-primary: #154fc4;
+  --color-primary-hover: #103e9b;
+  --color-surface: #f4f6f9;
+  --color-line: #dbe1e9;
+  --color-control: #8794a6;
+  --color-danger: #a32332;
+  --color-danger-surface: #fff3f4;
+  --color-danger-hover: #fff0f1;
+  --color-danger-line: #d5a6ad;
+  --color-success: #216341;
+  --color-success-surface: #eef8f0;
+  --color-success-line: #b9d8c0;
+  --color-rating: #81590d;
+  --color-brand-surface: #edf3ff;
+  --color-brand-ink: #163b7a;
+  --color-brand-line: #c0d2f1;
+
+  /* Tipografía: escala y roles fluidos compartidos entre pantallas. */
+  --font-sans: 'Manrope', sans-serif;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.6;
+  --text-display: clamp(2rem, 4vw, 3rem);
+  --text-display--line-height: 1.2;
+  --text-headline: clamp(1.875rem, 3vw, 2.5rem);
+  --text-headline--line-height: 1.2;
+  --text-brand-display: clamp(2.25rem, 4vw, 3.5rem);
+  --text-brand-display--line-height: 1.2;
+  --font-weight-demibold: 650;
+  --font-weight-price: 750;
+  --leading-body: 1.6;
+  --leading-card: 1.45;
+  --tracking-heading: -0.025em;
+  --tracking-brand: -0.04em;
+
+  /* Espaciado y anchuras: escala rem y tamaños con propósito. */
+  --spacing: 0.25rem;
+  --spacing-control: 2.875rem;
+  --spacing-quantity: 5.625rem;
+  --spacing-header: 6.25rem;
+  --spacing-login-min: 40.625rem;
+  --container-shell: 88.5rem;
+  --container-login: 70rem;
+  --container-form: 25rem;
+  --container-summary: 20rem;
+  --container-copy: 65ch;
+  --container-help: 90ch;
+  --container-intro: 34ch;
+  --radius-tag: 0.3125rem;
+  --radius-control: 0.5rem;
+  --radius-notice: 0.625rem;
+  --radius-card: 0.75rem;
+  --radius-gallery: 1rem;
+
+  /* Responsive mobile first: mismos umbrales en toda la aplicación. */
+  --breakpoint-*: initial;
+  --breakpoint-xs: 22rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  /* Movimiento: interacción breve y una carga que respeta reduced motion. */
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-product: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@theme {
-  /* === COLORES === */
+/* Base global: navegador, semántica y controles nativos; sin layouts de componentes. */
+@layer base {
+  html {
+    @apply scheme-light scroll-pt-28;
+    scrollbar-color: var(--color-control) var(--color-surface);
+  }
+  body {
+    @apply m-0 bg-canvas font-sans text-base text-ink antialiased;
+    line-height: var(--leading-body);
+  }
+  h1,
+  h2,
+  h3 {
+    @apply text-balance tracking-heading;
+    line-height: var(--leading-tight);
+  }
+  p {
+    @apply text-pretty;
+  }
+  a {
+    @apply underline-offset-4;
+  }
+  button {
+    @apply cursor-pointer disabled:cursor-not-allowed disabled:opacity-55;
+  }
+  input,
+  select {
+    @apply min-h-control rounded-control border border-control bg-canvas px-3.5 py-2.5 text-base text-ink caret-primary placeholder:text-muted placeholder:opacity-100 disabled:cursor-not-allowed disabled:opacity-55;
+  }
+  input[type='number'] {
+    @apply tabular-nums;
+  }
+  select {
+    @apply pr-8;
+  }
+  label {
+    @apply text-sm font-semibold;
+  }
+  :focus-visible {
+    @apply outline-3 outline-offset-4 outline-primary;
+  }
+  ::selection {
+    @apply bg-primary text-canvas;
+  }
+}
 
-  /* Fondos oscuros */
-  --color-bg: #090909;
-  --color-bg-deep: #0b0b0b;
-  --color-bg-gallery: #0f0f0f;
-
-  /* === TIPOGRAFÍA === */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-
-  /* Tailwind ya cubre: xs=12px, sm=14px, lg=18px, xl=20px, 2xl=24px */
-  --text-2xs: 0.625rem; /* 10px — badges, category tags */
-  --text-tag: 0.6875rem; /* 11px — labels, subtítulos pequeños */
-  --text-body: 0.8125rem; /* 13px — texto principal del app */
-  --text-md: 0.9375rem; /* 15px — precios en cards */
-  --text-display: 1.75rem; /* 28px — títulos de página */
-  --text-price: 2rem; /* 32px — precio principal de producto */
+/* Accesibilidad del sistema: contraste forzado conserva el foco nativo. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
 }

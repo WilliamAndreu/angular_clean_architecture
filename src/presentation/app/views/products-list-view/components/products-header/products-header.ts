@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -7,7 +7,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   standalone: true,
   imports: [RouterLink, TranslatePipe],
   templateUrl: './products-header.html',
-  styleUrl: './products-header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block min-w-0' },
 })
 export class ProductsHeader {
   @Input({ required: true }) searchTerm!: string;

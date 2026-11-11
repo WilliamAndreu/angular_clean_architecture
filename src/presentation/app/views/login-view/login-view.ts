@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { DetailHeader } from '../../../shared/components/detail-header/detail-header';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { LoginViewModel } from './viewmodel/login.viewmodel';
 import { LoginHeader } from './components/login-header/login-header';
 import { LoginForm, LoginFormValue } from './components/login-form/login-form';
@@ -6,10 +7,11 @@ import { LoginFooter } from './components/login-footer/login-footer';
 
 @Component({
   selector: 'app-login-view',
-  imports: [LoginHeader, LoginForm, LoginFooter],
+  imports: [DetailHeader, LoginHeader, LoginForm, LoginFooter],
   providers: [LoginViewModel],
   templateUrl: './login-view.html',
-  styleUrl: './login-view.scss',
+  host: { class: 'block min-w-0' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class LoginView {

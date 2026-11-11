@@ -1,0 +1,36 @@
+<!-- Navegación: acceso al catálogo y la cuenta. -->
+<app-detail-header backLabel="Products" backRoute="/" />
+<main
+  class="view-enter mx-auto w-full max-w-shell px-5 pt-5 pb-12 md:px-12 md:pt-5 md:pb-18"
+  [attr.aria-busy]="vm.viewState.isLoading()"
+>
+  <!-- Introducción: carrito y límites de la demostración. -->
+  <h1 class="text-display font-bold">{{ 'cart.title' | translate }}</h1>
+  <p class="mt-3 max-w-copy text-muted">Review your finds and adjust your quantities.</p>
+  <p
+    class="view-enter rounded-notice border px-5 py-4 text-sm mt-7 mb-9 max-w-help border-line bg-surface text-muted"
+  >
+    {{ 'cart.simulation' | translate }}
+  </p>
+  <!-- Contenido: productos y recuperación de errores. -->
+  @if (vm.viewState.isLoading() && !vm.viewState.cart()) {
+    <app-cart-skeleton />
+  } @else {
+    <div
+      class="content-enter grid grid-cols-1 items-start gap-7 lg:grid-cols-[minmax(0,1fr)_var(--container-summary)] lg:gap-12"
+    >
+      <section class="min-w-0" aria-label="Cart items">
+        <app-cart-feedback /><app-cart-items />
+      </section>
+      <!-- Resumen: importes calculados y acciones del carrito. -->
+      @if (vm.viewState.cart()?.items.length) {
+        <aside
+          class="w-full max-w-xl rounded-card bg-surface p-7 lg:max-w-none"
+          aria-label="Cart summary"
+        >
+          <app-cart-summary /><app-cart-actions />
+        </aside>
+      }
+    </div>
+  }
+</main>

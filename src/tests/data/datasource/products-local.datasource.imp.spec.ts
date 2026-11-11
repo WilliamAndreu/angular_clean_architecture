@@ -1,39 +1,41 @@
-import { describe, it, expect } from 'vitest';
-import {
-  PRODUCTS_CACHE_TTL_MS,
-  ProductsDbo,
-} from 'src/data/datasource/products/local/dbo/products.dbo';
-
-const mockProductsDbo: ProductsDbo = {
-  products: [],
-  total: 0,
-  skip: 0,
-  limit: 20,
-  cachedAt: Date.now(),
-};
-
-describe('ProductsLocalDataSourceImp (TTL cache)', () => {
-  it('exports correct TTL of 1 hour', () => {
-    expect(PRODUCTS_CACHE_TTL_MS).toBe(60 * 60 * 1000);
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
+import { firstValueFrom } from 'rxjs';
+import { ProductsLocalDataSourceImp } from '@data/datasource/products/local/products-local.datasource.imp';
+import { PRODUCTS_CACHE_TTL_MS } from '@data/datasource/products/local/dbo/products.dbo';
+import { StorageSource } from 'src/core/services/storage/source/storage.source';
+import { LocalStorageServiceImp } from 'src/core/services/storage/local-storage/local-storage.service.imp';
+import { page } from '../../fixtures';
+describe('ProductsLocalDataSourceImp', () => {
+  let source: ProductsLocalDataSourceImp;
+  beforeEach(() => {
+    localStorage.clear();
+    vi.useFakeTimers();
+    vi.setSystemTime(10000000);
+    TestBed.configureTestingModule({
+      providers: [
+        ProductsLocalDataSourceImp,
+        { provide: StorageSource, useClass: LocalStorageServiceImp },
+      ],
+    });
+    source = TestBed.inject(ProductsLocalDataSourceImp);
   });
-
-  it('returns null for expired cache (Date.now mocked)', () => {
-    const storage = new Map<string, unknown>();
-    const expired = Date.now() - PRODUCTS_CACHE_TTL_MS - 1;
-    storage.set('products_skip_0', { ...mockProductsDbo, cachedAt: expired });
-
-    const cached = storage.get('products_skip_0') as ProductsDbo;
-    const isExpired = Date.now() - cached.cachedAt > PRODUCTS_CACHE_TTL_MS;
-    expect(isExpired).toBe(true);
+  afterEach(() => vi.useRealTimers());
+  it('reads a valid page through the real storage adapter', async () => {
+    source.saveProducts('query', { ...page, cachedAt: Date.now() });
+    expect(await firstValueFrom(source.getProducts('query'))).toMatchObject(page);
   });
-
-  it('returns data for valid cache', () => {
-    const storage = new Map<string, unknown>();
-    storage.set('products_skip_0', mockProductsDbo);
-
-    const cached = storage.get('products_skip_0') as ProductsDbo;
-    const isExpired = Date.now() - cached.cachedAt > PRODUCTS_CACHE_TTL_MS;
-    expect(isExpired).toBe(false);
-    expect(cached.products).toEqual(mockProductsDbo.products);
+  it('expires exactly at the TTL boundary', async () => {
+    source.saveProducts('query', { ...page, cachedAt: Date.now() });
+    vi.advanceTimersByTime(PRODUCTS_CACHE_TTL_MS);
+    expect(await firstValueFrom(source.getProducts('query'))).toBeNull();
+  });
+  it('rejects malformed or legacy cache entries', async () => {
+    localStorage.setItem('products_v2_query', JSON.stringify(page));
+    expect(await firstValueFrom(source.getProducts('query'))).toBeNull();
+  });
+  it('isolates query keys', async () => {
+    source.saveProducts('20:0', { ...page, cachedAt: Date.now() });
+    expect(await firstValueFrom(source.getProducts('10:0'))).toBeNull();
   });
 });

@@ -1,11 +1,66 @@
-<div class="max-w-200 mx-auto w-full px-8 py-4 flex items-center gap-4 max-sm:px-5">
-  <a
-    [routerLink]="backRoute()"
-    class="flex items-center gap-2 text-body text-white/40 hover:text-white/70 transition-colors duration-200"
+<!-- Cabecera común: marca y navegación entre pantallas. -->
+<header class="border-b border-line">
+  <div
+    class="mx-auto flex min-h-20 w-full max-w-shell flex-wrap items-center justify-between gap-4 px-5 md:min-h-header md:px-12"
   >
-    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M19 12H5M12 5l-7 7 7 7" />
-    </svg>
-    {{ backLabel() | translate }}
-  </a>
+    <a
+      class="inline-flex shrink-0 items-center gap-2 text-xl font-extrabold tracking-brand no-underline sm:gap-2.5 sm:text-2xl"
+      routerLink="/"
+      aria-label="Store home"
+      ><svg
+        class="h-8 w-7.5 shrink-0 text-primary"
+        aria-hidden="true"
+        viewBox="0 0 32 34"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M5 10h22l2 21H3L5 10Z" />
+        <path d="M11 12V7a5 5 0 0 1 10 0v5" /></svg
+      ><span>Store<span aria-hidden="true">.</span></span></a
+    >
+    <nav class="flex min-w-0 flex-wrap items-center gap-3 sm:gap-7" aria-label="Main navigation">
+      <a
+        class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold no-underline hover:text-primary hover:underline"
+        routerLink="/"
+        >Products</a
+      ><a
+        class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold no-underline hover:text-primary hover:underline"
+        routerLink="/cart"
+        ><svg
+          class="hidden size-5 shrink-0 sm:block"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+        >
+          <path d="M3 3h2l3 13h11l2-9H6" />
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="19" cy="21" r="1" /></svg
+        >{{ 'cart.title' | translate }}</a
+      ><a
+        class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold no-underline hover:text-primary hover:underline"
+        routerLink="/profile"
+        >{{ 'cart.profile' | translate }}</a
+      >
+    </nav>
+  </div>
+</header>
+<!-- Ruta de regreso: contexto de la pantalla actual. -->
+<div class="mx-auto mt-4 w-full max-w-shell px-5 md:mt-7 md:px-12">
+  <a
+    class="inline-flex min-h-11 items-center gap-2 text-sm text-muted no-underline hover:text-primary"
+    [routerLink]="backRoute()"
+    ><svg
+      class="size-4.5"
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+    >
+      <path d="M19 12H5m7-7-7 7 7 7" /></svg
+    >Back to {{ backLabel() | translate }}</a
+  >
 </div>

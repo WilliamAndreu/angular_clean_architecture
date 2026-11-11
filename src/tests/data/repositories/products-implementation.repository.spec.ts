@@ -1,59 +1,60 @@
-import { describe, it, expect, vi } from 'vitest';
-import { of, firstValueFrom } from 'rxjs';
-import { ProductDtoToEntityMapper } from 'src/data/repositories/products/mappers/product-dto-to-entity.mapper';
-import { ProductDto } from 'src/data/datasource/products/remote/dto/product.dto';
-import { ProductsDto } from 'src/data/datasource/products/remote/dto/products.dto';
-
-const mockDto: ProductDto = {
-  id: 1,
-  title: 'Product',
-  description: 'Desc',
-  price: 10,
-  discountPercentage: 0,
-  rating: 4,
-  stock: 50,
-  brand: 'Brand',
-  category: 'cat',
-  thumbnail: 'thumb.jpg',
-  images: [],
-  availabilityStatus: 'In Stock',
-  tags: [],
-};
-
-const mockProductsDto: ProductsDto = {
-  products: [mockDto],
-  total: 1,
-  skip: 0,
-  limit: 20,
-};
-
-describe('ProductsImpRepository (unit logic)', () => {
-  const mapper = new ProductDtoToEntityMapper();
-
-  it('maps remote DTO to entity via mapper', () => {
-    const entity = mapper.mapFrom(mockDto);
-    expect(entity.id).toBe(1);
-    expect(entity.title).toBe('Product');
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
+import { firstValueFrom, of, throwError } from 'rxjs';
+import { ProductsRepository } from '@repositories/products/products.repository';
+import { provideProductsDI } from '@di/products/products.di';
+import { ProductsLocalDataSource } from 'src/data/datasource/products/source/products-local.source';
+import { ProductsRemoteDataSource } from 'src/data/datasource/products/source/products-remote.source';
+import { NotFoundError } from 'src/domain/errors/app-error';
+import { page, product } from '../../fixtures';
+describe('ProductsRepositoryImp', () => {
+  const local = { getProducts: vi.fn(), saveProducts: vi.fn() };
+  const remote = { getProducts: vi.fn(), getProduct: vi.fn(), getCategories: vi.fn() };
+  let repo: ProductsRepository;
+  beforeEach(() => {
+    vi.resetAllMocks();
+    local.getProducts.mockReturnValue(of(null));
+    remote.getProducts.mockReturnValue(of(page));
+    remote.getProduct.mockReturnValue(of(product));
+    TestBed.configureTestingModule({
+      providers: [
+        provideProductsDI(),
+        { provide: ProductsLocalDataSource, useValue: local },
+        { provide: ProductsRemoteDataSource, useValue: remote },
+      ],
+    });
+    repo = TestBed.inject(ProductsRepository);
   });
-
-  it('uses cache when local returns data', async () => {
-    const localGet = vi.fn((_skip: number) => of(mockProductsDto));
-    const remoteGet = vi.fn((_limit: number, _skip: number) => of(mockProductsDto));
-
-    const cached = await firstValueFrom(localGet(0));
-    expect(cached).toEqual(mockProductsDto);
-    expect(remoteGet).not.toHaveBeenCalled();
+  it('uses valid cache without HTTP', async () => {
+    local.getProducts.mockReturnValue(of({ ...page, cachedAt: Date.now() }));
+    expect(await firstValueFrom(repo.getProducts({ limit: 20, skip: 0 }))).toEqual(page);
+    expect(remote.getProducts).not.toHaveBeenCalled();
   });
-
-  it('fetches remote when cache is null', async () => {
-    const localGet = vi.fn((_skip: number) => of(null));
-    const remoteGet = vi.fn((_limit: number, _skip: number) => of(mockProductsDto));
-
-    const cached = await firstValueFrom(localGet(0));
-    if (!cached) {
-      const remote = await firstValueFrom(remoteGet(20, 0));
-      expect(remote).toEqual(mockProductsDto);
-    }
-    expect(remoteGet).toHaveBeenCalledOnce();
+  it('fetches, maps and saves cache misses', async () => {
+    expect(await firstValueFrom(repo.getProducts({ limit: 20, skip: 0 }))).toEqual(page);
+    expect(remote.getProducts).toHaveBeenCalledOnce();
+    expect(local.saveProducts).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ ...page, cachedAt: expect.any(Number) }),
+    );
+  });
+  it('uses different cache keys for every query dimension', async () => {
+    for (const query of [
+      { limit: 20, skip: 0 },
+      { limit: 10, skip: 0 },
+      { limit: 20, skip: 20 },
+      { limit: 20, skip: 0, search: 'phone' },
+      { limit: 20, skip: 0, category: 'beauty' },
+      { limit: 20, skip: 0, order: 'desc' as const },
+      { limit: 20, skip: 0, sortBy: 'price' as const },
+    ])
+      await firstValueFrom(repo.getProducts(query));
+    expect(new Set(local.getProducts.mock.calls.map(([key]) => key)).size).toBe(7);
+  });
+  it('translates missing products into a domain error', async () => {
+    remote.getProduct.mockReturnValue(throwError(() => new NotFoundError('errors.not_found')));
+    await expect(firstValueFrom(repo.getProduct(999))).rejects.toMatchObject({
+      messageKey: 'errors.products.not_found',
+    });
   });
 });

@@ -1,33 +1,41 @@
-<div
-  class="w-full max-w-105 bg-white/2 border border-white/8 rounded-2xl p-8 flex flex-col items-center gap-6"
->
-  <img
-    class="w-24 h-24 rounded-full object-cover border border-white/8"
-    [src]="user.image"
-    [alt]="user.firstName"
-  />
-
-  <div class="text-center flex flex-col gap-1">
-    <h2 class="text-xl font-semibold text-white/90">{{ user.firstName }} {{ user.lastName }}</h2>
-    <p class="text-body text-white/40">@{{ user.username }}</p>
-  </div>
-
-  <div class="w-full flex flex-col gap-0 border border-white/6 rounded-xl overflow-hidden">
-    <div class="flex items-center justify-between px-4 py-3 border-b border-white/6">
-      <span class="text-xs text-white/30">{{ 'profile.email' | translate }}</span>
-      <span class="text-body text-white/70">{{ user.email }}</span>
-    </div>
-    <div class="flex items-center justify-between px-4 py-3">
-      <span class="text-xs text-white/30">{{ 'profile.gender' | translate }}</span>
-      <span class="text-body text-white/70 capitalize">{{ user.gender }}</span>
+<!-- Identidad: avatar y nombre del usuario. -->
+<section aria-label="Profile details">
+  <div class="flex items-center gap-4 pb-8 sm:gap-6">
+    <img
+      class="size-18 shrink-0 rounded-full bg-surface object-cover sm:size-24"
+      [src]="user.image"
+      alt=""
+      width="96"
+      height="96"
+    />
+    <div>
+      <h2 class="text-2xl font-semibold sm:text-3xl">{{ user.firstName }} {{ user.lastName }}</h2>
+      <p class="mt-2 text-muted">@{{ user.username }}</p>
     </div>
   </div>
-
-  <button
-    type="button"
-    (click)="logout.emit()"
-    class="w-full border border-red-500/18 text-red-400/70 text-body font-medium py-2.5 rounded-xl transition-all duration-200 hover:bg-red-500/6 hover:text-red-400/90"
-  >
-    {{ 'profile.sign_out' | translate }}
-  </button>
-</div>
+  <!-- Datos de la cuenta: pares de etiqueta y valor. -->
+  <dl class="m-0 border-t border-line">
+    <div
+      class="grid grid-cols-1 gap-2 border-b border-line py-5 sm:grid-cols-[--spacing(40)_minmax(0,1fr)] sm:gap-6 sm:py-6"
+    >
+      <dt class="text-muted">{{ 'profile.email' | translate }}</dt>
+      <dd class="m-0 font-semibold wrap-anywhere">{{ user.email }}</dd>
+    </div>
+    <div
+      class="grid grid-cols-1 gap-2 border-b border-line py-5 sm:grid-cols-[--spacing(40)_minmax(0,1fr)] sm:gap-6 sm:py-6"
+    >
+      <dt class="text-muted">{{ 'profile.gender' | translate }}</dt>
+      <dd class="m-0 font-semibold wrap-anywhere">{{ user.gender }}</dd>
+    </div>
+  </dl>
+  <!-- Sesión: salida explícita de la cuenta. -->
+  <div class="pt-8">
+    <button
+      type="button"
+      class="inline-flex min-h-control items-center justify-center gap-2.5 rounded-control border px-5 py-3 text-center text-sm leading-snug font-bold no-underline transition-colors motion-safe:active:translate-y-px motion-reduce:transition-none border-danger-line bg-canvas text-danger not-disabled:hover:bg-danger-hover"
+      (click)="logout.emit()"
+    >
+      {{ 'profile.sign_out' | translate }}
+    </button>
+  </div>
+</section>

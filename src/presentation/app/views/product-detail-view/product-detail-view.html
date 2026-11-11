@@ -1,23 +1,76 @@
-<div class="min-h-screen">
+<!-- Cabecera y regreso al catálogo. -->
+<div>
   <app-detail-header backLabel="Products" backRoute="/" />
 
-  <main class="max-w-300 mx-auto px-8 py-12 max-sm:px-5 max-sm:py-8">
+  <main
+    class="view-enter mx-auto w-full max-w-shell px-5 pt-4 pb-12 md:px-12 md:pt-7 md:pb-18"
+    [attr.aria-busy]="vm.viewState.isLoading()"
+  >
+    <!-- Estados: carga y error de producto. -->
     @if (vm.viewState.isLoading()) {
-      <app-product-detail-loading />
+      <app-product-detail-skeleton />
     }
 
     @if (vm.viewState.error(); as error) {
       <app-product-detail-error [message]="error" />
     }
 
+    <!-- Producto: galería y ficha con acción de compra. -->
     @if (vm.viewState.product(); as product) {
-      <div class="grid grid-cols-2 gap-16 max-md:grid-cols-1 max-md:gap-10">
+      <div
+        class="content-enter grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-16 xl:gap-22"
+      >
         <app-product-gallery
           [product]="product"
           [activeImage]="vm.viewState.activeImage()"
           (activeImageChange)="vm.setActiveImage($event)"
         />
-        <app-product-info [product]="product" />
+        <div>
+          <app-product-info [product]="product" />
+          <!-- Compra: cantidad, disponibilidad y confirmación. -->
+          <div class="mt-8 flex flex-wrap items-end gap-4 border-t border-line pt-7">
+            <label class="grid gap-2"
+              >{{ 'cart.quantity' | translate }}
+              <input
+                #quantity
+                type="number"
+                value="1"
+                min="1"
+                [max]="product.stock"
+                step="1"
+                class="w-quantity aria-invalid:border-danger"
+            /></label>
+            <button
+              type="button"
+              class="inline-flex min-h-control items-center justify-center gap-2.5 rounded-control border px-5 py-3 text-center text-sm leading-snug font-bold no-underline transition-colors motion-safe:active:translate-y-px motion-reduce:transition-none border-primary bg-primary text-canvas not-disabled:hover:bg-primary-hover flex-1"
+              [disabled]="vm.viewState.isAdding() || product.stock === 0"
+              (click)="vm.addToCart(quantity.valueAsNumber)"
+            >
+              {{ (vm.viewState.isAdding() ? 'cart.adding' : 'cart.add') | translate }}
+            </button>
+            <a
+              class="text-sm font-bold text-primary underline underline-offset-4 flex min-h-control basis-full items-center xs:basis-auto"
+              routerLink="/cart"
+              >{{ 'cart.title' | translate }}</a
+            >
+          </div>
+          @if (vm.viewState.cartMessage(); as message) {
+            <p
+              role="status"
+              class="view-enter rounded-notice border px-5 py-4 text-sm border-success-line bg-success-surface text-success mt-5"
+            >
+              {{ message | translate }}
+            </p>
+          }
+          @if (vm.viewState.cartError(); as error) {
+            <p
+              role="alert"
+              class="view-enter rounded-notice border px-5 py-4 text-sm border-danger-line bg-danger-surface text-danger mt-5"
+            >
+              {{ error | translate }}
+            </p>
+          }
+        </div>
       </div>
     }
   </main>

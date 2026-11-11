@@ -1,21 +1,14 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError, throwError } from 'rxjs';
-import { UseCase } from '@interfaces/use-case';
+import { Observable, throwError } from 'rxjs';
+import { handleOperation } from 'src/domain/errors/handle-operation';
+import { ProductNotFoundError } from 'src/domain/errors/products/products.errors';
+import { UseCase } from 'src/domain/interfaces/use-case';
 import { ProductsRepository } from '@repositories/products/products.repository';
 import { ProductEntity } from '@models/products/product-entity.model';
-import { AppError } from 'src/core/errors/app-error';
 
-@Injectable()
 export class GetProductUseCase implements UseCase<number, ProductEntity> {
-  private readonly repo = inject(ProductsRepository);
-
+  constructor(private readonly repo: ProductsRepository) {}
   execute(id: number): Observable<ProductEntity> {
-    return this.repo.getProduct(id).pipe(
-      catchError((err) => {
-        if (err instanceof AppError) return throwError(() => err);
-        return throwError(() => new AppError('errors.products.load_failed'));
-      }),
-    );
+    if (!Number.isInteger(id) || id < 1) return throwError(() => new ProductNotFoundError());
+    return handleOperation(() => this.repo.getProduct(id), 'errors.products.load_failed');
   }
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { StorageSource } from 'src/core/services/storage/source/storage-source.interface';
+import { StorageSource } from 'src/core/services/storage/source/storage.source';
 import { TokensDbo } from './dbo/auth.dbo';
-import { AuthLocalDataSource } from '../source/auth-local.datasource';
+import { AuthLocalDataSource } from 'src/data/datasource/auth/source/auth-local.source';
 
 @Injectable()
 export class AuthLocalDataSourceImp extends AuthLocalDataSource {
